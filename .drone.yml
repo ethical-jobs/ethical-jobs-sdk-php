@@ -3,7 +3,7 @@ pipeline:
   test:
     image: ethicaljobs/aphex:7.2.x
     pull: true
-    commands: [ 'composer install --prefer-dist', './bin/vendor/phpunit' ]
+    commands: [ 'composer install --prefer-dist', 'ls', './bin/vendor/phpunit' ]
 
   publish:
     image: byrnedo/alpine-curl
