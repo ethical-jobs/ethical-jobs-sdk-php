@@ -6,7 +6,7 @@ use Mockery;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Contracts\Cache\Repository;
 use EthicalJobs\SDK\Authentication\TokenAuthenticator;
-use EthicalJobs\Tests\Integration\SDK\TestCase;
+use EthicalJobs\Tests\SDK\TestCase;
 use EthicalJobs\SDK\HttpClient;
 
 class TokenAuthenticatorTest extends TestCase

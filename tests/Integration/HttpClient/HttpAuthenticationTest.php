@@ -7,7 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use EthicalJobs\SDK\Authentication\NullAuthenticator;
-use EthicalJobs\Tests\Integration\SDK\TestCase;
+use EthicalJobs\Tests\SDK\TestCase;
 use EthicalJobs\SDK\HttpClient;
 
 class HttpAuthenticationTest extends TestCase

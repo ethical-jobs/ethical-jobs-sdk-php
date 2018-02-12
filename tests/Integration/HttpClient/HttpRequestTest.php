@@ -5,7 +5,7 @@ namespace EthicalJobs\Tests\Integration\SDK\HttpClient;
 use Mockery;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
-use EthicalJobs\Tests\Integration\SDK\TestCase;
+use EthicalJobs\Tests\SDK\TestCase;
 use EthicalJobs\SDK\HttpClient;
 
 class HttpRequestTest extends TestCase
