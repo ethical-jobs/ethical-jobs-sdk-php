@@ -1,61 +1,19 @@
 pipeline:
 
-  # ------------------------------------------------------
-  #  Test runner
-  # ------------------------------------------------------
   test:
     group: testing
     image: ethicaljobs/aphex:7.2.x
     pull: true
     commands: [ 'composer install --prefer-dist', 'phpunit' ]
 
-  # ------------------------------------------------------
-  #  Publish image to registry
-  # ------------------------------------------------------
   publish:
-    image: plugins/docker
-    repo: ethicaljobs/api-app
-    secrets: [ docker_username, docker_password ]
-    build_args: [ 'VERSION_TAG=${DRONE_TAG=latest}' ]
-    tags: [ 'latest', '${DRONE_TAG=${DRONE_COMMIT}}' ]
-
-  # ------------------------------------------------------
-  #  Deploy image to kubernetes cluster
-  # ------------------------------------------------------
-  deploy-staging:
-    image: ethicaljobs/drone-gce-deploy
-    cluster: ethical-jobs-staging
-    zone: asia-east1-a
-    secrets: [ gce_key ]
-    artefacts: [ 'operations/kubernetes.yml' ]
-    when:
-      branch: staging
-  deploy-production:
-    image: ethicaljobs/drone-gce-deploy
-    cluster: ethical-jobs-production
-    zone: australia-southeast1-a
-    secrets: [ gce_key ]
-    artefacts: [ 'operations/kubernetes.yml' ]
-    when:
-      event: tag
-
-  # ------------------------------------------------------
-  #  Notify services
-  # ------------------------------------------------------
-  notify-rollbar:
     image: byrnedo/alpine-curl
-    commands: [ 'curl https://api.rollbar.com/api/1/deploy/ -F access_token="ba13d858374c478f8d571c0b7629164c" -F environment=production -F revision="api-app/${DRONE_TAG}" -F local_username=drone-ci' ]
+    commands: [ 'curl -XPOST -H"content-type:application/json" "https://packagist.org/api/update-package?username=andrewmclagan&apiToken=2cmy6xog4hs0kogk4ccg" -d\'{"repository":{"url":"https://packagist.org/packages/ethical-jobs/ethical-jobs-sdk"}}\'' ]
     when:
       status: success
       event: tag
+
   notify-slack:
     image: plugins/slack
     webhook: https://hooks.slack.com/services/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
     channel: deployments
-
-# services:
-
-#   elasticsearch:
-#     image: elasticsearch:5-alpine
-#     volumes:
-#       - /home/ubuntu/drone/elasticsearch:/usr/share/elasticsearch/data
