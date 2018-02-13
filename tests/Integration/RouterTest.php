@@ -20,10 +20,10 @@ class RouterTest extends TestCase
         $this->assertEquals('https://api.ethicalstaging.com.au/jobs', Router::getRouteUrl('jobs'));
 
         App::shouldReceive('environment')->once()->andReturn('testing');
-        $this->assertEquals('https://api.ethicaljobs.local/jobs', Router::getRouteUrl('jobs'));
+        $this->assertEquals('http://api-app/jobs', Router::getRouteUrl('jobs'));
 
         App::shouldReceive('environment')->once()->andReturn('development');
-        $this->assertEquals('https://api.ethicaljobs.local/jobs', Router::getRouteUrl('jobs'));                                
+        $this->assertEquals('http://api-app/jobs', Router::getRouteUrl('jobs'));                                
     }
 
     /**

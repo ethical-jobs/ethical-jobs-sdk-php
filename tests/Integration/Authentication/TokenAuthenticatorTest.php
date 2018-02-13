@@ -26,7 +26,7 @@ class TokenAuthenticatorTest extends TestCase
             ->once()
             ->withArgs([
                 'POST',
-                'https://api.ethicaljobs.local/oauth/token',
+                'http://api-app/oauth/token',
                 [
                     'json' => [
                         'grant_type'    => 'client_credentials',
@@ -102,7 +102,7 @@ class TokenAuthenticatorTest extends TestCase
             ->once()
             ->withArgs([
                 'POST',
-                'https://api.ethicaljobs.local/oauth/token',
+                'http://api-app/oauth/token',
                 [
                     'json' => [
                         'grant_type'    => 'client_credentials',

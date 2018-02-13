@@ -22,19 +22,19 @@ class Router
 	{
 		switch (App::environment()) {
 			case 'staging':
-				$host = 'api.ethicalstaging.com.au';
+				$host = 'https://api.ethicalstaging.com.au';
 				break;						
 			case 'development':	
 			case 'testing':
-				$host = 'api.ethicaljobs.local';
+				$host = 'http://api-app';
 				break;			
 			case 'production':
 			default:
-				$host = 'api.ethicaljobs.com.au';
+				$host = 'https://api.ethicaljobs.com.au';
 				break;
 		}
 
-		return "https://{$host}".self::sanitizeRoute($route);
+		return "{$host}".self::sanitizeRoute($route);
 	}	
 
    	/**

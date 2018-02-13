@@ -39,7 +39,7 @@ class HttpVerbTest extends TestCase
 
             $expected = new Request(
                 strtoupper($verb), 
-                'https://api.ethicaljobs.local/jobs', 
+                'http://api-app/jobs', 
                 ['Content-Type' => 'application/json','X-Custom' => 'foo'],
                 json_encode(['foo' => 'bar'])
             );
