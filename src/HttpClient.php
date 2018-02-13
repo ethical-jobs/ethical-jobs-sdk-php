@@ -267,7 +267,7 @@ class HttpClient
 				break;						
 			case 'development':	
 			case 'testing':
-				$host = 'api.ethicaljobs.local';
+				$host = 'api-app';
 				break;			
 			case 'production':
 			default:
