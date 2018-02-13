@@ -1,6 +1,6 @@
 <?php
 
-namespace EthicalJobs\Tests\SDK\Resources;
+namespace EthicalJobs\Tests\SDK\Resources\Jobs;
 
 use Mockery;
 use Illuminate\Support\Collection;
@@ -9,7 +9,7 @@ use EthicalJobs\Tests\SDK\TestCase;
 use EthicalJobs\SDK\Enumerables;
 use EthicalJobs\SDK\HttpClient;
 
-class JobsResourceTest extends TestCase
+class ApprovedJobsTest extends TestCase
 {
     /**
      * @test

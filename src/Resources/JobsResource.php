@@ -3,6 +3,7 @@
 namespace EthicalJobs\SDK\Resources;
 
 use EthicalJobs\SDK\Enumerables;
+use Illuminate\Support\Collection;
 
 /**
  * Jobs api resource
@@ -33,4 +34,46 @@ class JobsResource extends ApiResource
 			'expired'	=> 0,
 		], $params));
 	}	
+
+	/**
+   	 * Patch a collection of jobs
+   	 *
+   	 * @param Illuminate\Support\Collection $jobs
+   	 * @return Illuminate\Support\Collection
+	 */		
+	public function patchCollection(Collection $jobs)
+	{
+		return $this->collection('PATCH', $jobs);
+	}		
+
+	/**
+   	 * Put a collection of jobs
+   	 *
+   	 * @param Illuminate\Support\Collection $jobs
+   	 * @return Illuminate\Support\Collection
+	 */		
+	public function putCollection(Collection $jobs)
+	{
+		return $this->collection('PUT', $jobs);
+	}	
+
+	/**
+   	 * Chunk and make requests on a collection resource
+   	 *
+   	 * @param Illuminate\Support\Collection $jobs
+   	 * @return Illuminate\Support\Collection
+	 */		
+	protected function collection($verb, Collection $jobs)
+	{
+		$responses = [];
+
+		foreach ($jobs->chunk(50) as $chunk) {
+
+			$response = $this->http->$verb('/jobs/collection', ['jobs' => $chunk]);
+
+			$responses = array_merge_recursive($responses, $response->toArray());
+		}
+
+		return new Collection($responses);
+	}		
 }
