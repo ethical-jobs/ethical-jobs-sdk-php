@@ -3,9 +3,10 @@
 namespace EthicalJobs\SDK\Authentication;
 
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Contracts\Cache\Repository;
-use EthicalJobs\SDK\HttpClient;
+use EthicalJobs\SDK\Router;
 
 /**
  * Token Authenticator
@@ -30,11 +31,11 @@ class TokenAuthenticator implements Authenticator
 	protected $tokenTTL = 60; // refresh the token every hour
 
 	/**
-	 * Http client
+	 * Guzzle client
 	 *
-	 * @var \EthicalJobs\SDK\HttpClient
+	 * @var \GuzzleHttp\Client
 	 */
-	protected $http;
+	protected $client;
 
 	/**
 	 * Cache instance
@@ -58,9 +59,9 @@ class TokenAuthenticator implements Authenticator
 	 *
 	 * @param 
 	 */
-	public function __construct(HttpClient $http, Repository $cache, Array $credentials = [])
+	public function __construct(Client $client, Repository $cache, Array $credentials = [])
 	{
-		$this->http = $http;
+		$this->client = $client;
 
 		$this->cache = $cache;
 
@@ -110,15 +111,25 @@ class TokenAuthenticator implements Authenticator
 	/**
 	 * Fetches an Auth token
 	 * 
-	 * @return [type] [description]
+	 * @return String
 	 */
 	protected function fetchToken()
 	{	
-		$response = $this->http->post('/oauth/token', array_merge([
+		$route = Router::getRouteUrl('/oauth/token');
+
+		$json = array_merge([
         	'grant_type' 	=> 'client_credentials',
         	'scope' 		=> '*',			
-		], $this->credentials));
+		], $this->credentials);
 
-		return isset($response['access_token']) ? $response['access_token'] : '';
+		$response = $this->client->request('POST', $route, ['json' => $json]);
+
+		if ($response->getStatusCode() > 199 && $response->getStatusCode() < 300) {
+			if ($decoded = json_decode($response->getBody())) {
+				return $decoded->access_token ?? '';
+			}
+		}
+
+		return '';
 	}	
 }

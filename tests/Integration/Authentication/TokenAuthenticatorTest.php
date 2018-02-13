@@ -3,11 +3,13 @@
 namespace EthicalJobs\Tests\Integration\SDK\Authentication;
 
 use Mockery;
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Contracts\Cache\Repository;
 use EthicalJobs\SDK\Authentication\TokenAuthenticator;
+use EthicalJobs\Tests\SDK\Fixtures\Responses;
 use EthicalJobs\Tests\SDK\TestCase;
-use EthicalJobs\SDK\HttpClient;
 
 class TokenAuthenticatorTest extends TestCase
 {
@@ -17,19 +19,24 @@ class TokenAuthenticatorTest extends TestCase
      */
     public function it_can_get_its_token_from_cache()
     {
-        $http = Mockery::mock(HttpClient::class)
-            ->shouldReceive('post')
+        $response = Responses::authentication(200);
+
+        $client = Mockery::mock(Client::class)
+            ->shouldReceive('request')
             ->once()
             ->withArgs([
-                '/oauth/token',
+                'POST',
+                'https://api.ethicaljobs.local/oauth/token',
                 [
-                    'grant_type'    => 'client_credentials',
-                    'client_id'     => '',
-                    'client_secret' => '',
-                    'scope'         => '*',         
+                    'json' => [
+                        'grant_type'    => 'client_credentials',
+                        'scope'         => '*',       
+                        'client_id'     => '',
+                        'client_secret' => '',
+                    ],
                 ]
             ])
-            ->andReturn(['access_token' => 'mock-jwt-token'])
+            ->andReturn($response)
             ->getMock();               
 
         $cache = Mockery::mock(Repository::class)
@@ -39,13 +46,13 @@ class TokenAuthenticatorTest extends TestCase
                 'ej:pkg:sdk:token',
                 60,
                 Mockery::on(function($callback) {
-                    $this->assertEquals('mock-jwt-token', $callback());
+                    $this->assertEquals(Responses::token(), $callback());
                     return true;
                 }),
             ])
             ->getMock();  
 
-        (new TokenAuthenticator($http, $cache))
+        (new TokenAuthenticator($client, $cache))
             ->getToken();
     }    
 
@@ -55,7 +62,7 @@ class TokenAuthenticatorTest extends TestCase
      */
     public function it_sets_an_authorization_bearer_header()
     {
-        $http = Mockery::mock(HttpClient::class);
+        $client = Mockery::mock(Client::class);
 
         $cache = Mockery::mock(Repository::class)
             ->shouldReceive('remember')
@@ -66,7 +73,7 @@ class TokenAuthenticatorTest extends TestCase
 
         $original = new Request('GET', 'https://github.com/stars');
 
-        $authenticated = (new TokenAuthenticator($http, $cache))
+        $authenticated = (new TokenAuthenticator($client, $cache))
             ->authenticate($original);
 
         $expected = [
@@ -83,24 +90,29 @@ class TokenAuthenticatorTest extends TestCase
      */
     public function it_sets_its_credentials()
     {
+        $response = Responses::authentication(200);
+
         $credentials = [
             'client_id'     => 'ci-123',
             'client_secret' => 'cs-123',                  
         ];
 
-        $http = Mockery::mock(HttpClient::class)
-            ->shouldReceive('post')
+        $client = Mockery::mock(Client::class)
+            ->shouldReceive('request')
             ->once()
             ->withArgs([
-                '/oauth/token',
+                'POST',
+                'https://api.ethicaljobs.local/oauth/token',
                 [
-                    'grant_type'    => 'client_credentials',
-                    'client_id'     => 'ci-123',
-                    'client_secret' => 'cs-123',    
-                    'scope'         => '*',         
+                    'json' => [
+                        'grant_type'    => 'client_credentials',
+                        'scope'         => '*',       
+                        'client_id'     => 'ci-123',
+                        'client_secret' => 'cs-123',
+                    ],
                 ]
             ])
-            ->andReturn(['access_token' => 'mock-jwt-token'])
+            ->andReturn($response)
             ->getMock();               
 
         $cache = Mockery::mock(Repository::class)
@@ -110,7 +122,7 @@ class TokenAuthenticatorTest extends TestCase
                 'ej:pkg:sdk:token',
                 60,
                 Mockery::on(function($callback) {
-                    $this->assertEquals('mock-jwt-token', $callback());
+                    $callback();
                     return true;
                 }),
             ])
@@ -118,8 +130,7 @@ class TokenAuthenticatorTest extends TestCase
 
         $request = new Request('GET', 'https://github.com/stars');
 
-        $authenticated = (new TokenAuthenticator($http, $cache))
-            ->setCredentials($credentials)
+        $authenticated = (new TokenAuthenticator($client, $cache, $credentials))
             ->authenticate($request);
     }       
 }

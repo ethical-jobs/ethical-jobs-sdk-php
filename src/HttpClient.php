@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Collection;
 use EthicalJobs\SDK\Authentication\Authenticator;
+use EthicalJobs\SDK\Router;
 
 /**
  * Http client
@@ -31,13 +32,6 @@ class HttpClient
 	protected $authenticator;	
 
 	/**
-	 * Api environment
-	 *
-	 * @var String
-	 */
-	protected $environment;	
-
-	/**
 	 * PSR7 request
 	 *
 	 * @var GuzzleHttp\Psr7\Request
@@ -59,11 +53,9 @@ class HttpClient
 	 * @param String $environment
 	 * @return Void
 	 */
-	public function __construct(Client $client, Authenticator $auth = null, $environment = 'production')
+	public function __construct(Client $client, Authenticator $auth = null)
 	{
 		$this->client = $client;
-
-		$this->environment = $environment;
 
 		$this->authenticator = $auth;
 	}
@@ -216,7 +208,7 @@ class HttpClient
 	{
 		$request = new Request(
 			$verb, 
-			$this->getRouteUrl($route), 
+			Router::getRouteUrl($route), 
 			$this->mergeDefaultHeaders($headers), 
 			json_encode($body)
 		);
@@ -251,31 +243,6 @@ class HttpClient
 
             return new Collection([]);
 		}
-	}	
-
-	/**
-	 * Returns full URL for a requet route
-	 * 
-	 * @param string $route
-	 * @return string
-	 */
-	protected function getRouteUrl(string $route)
-	{
-		switch ($this->environment) {
-			case 'staging':
-				$host = 'api.ethicalstaging.com.au';
-				break;						
-			case 'development':	
-			case 'testing':
-				$host = 'api-app';
-				break;			
-			case 'production':
-			default:
-				$host = 'api.ethicaljobs.com.au';
-				break;
-		}
-
-		return "https://{$host}{$route}";
 	}	
 
 	/**

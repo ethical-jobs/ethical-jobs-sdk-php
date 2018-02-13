@@ -3,6 +3,7 @@
 namespace EthicalJobs\SDK\Resources;
 
 use EthicalJobs\SDK\HttpClient;
+use EthicalJobs\SDK\Router;
 
 /**
  * Base api resource 
@@ -38,17 +39,6 @@ abstract class ApiResource
    	abstract public static function getName();
 
    	/**
-   	 * Return route to the resource
-   	 * 
-   	 * @param  String $subRoute
-   	 * @return String
-   	 */
-    protected function getResourceRoute($subRoute = '')
-    {   	
-    	return '/'.static::getName().'/'.ltrim($subRoute, '/');
-    }
-
-   	/**
    	 * Dynamic http verb methods
    	 * 
    	 * @param  String $name
@@ -61,7 +51,7 @@ abstract class ApiResource
 
     		$subRoute = is_string($arguments[0]) ? $arguments[0] : '';
 
-    		$route = $this->getResourceRoute($subRoute);
+    		$route = Router::getResourceRoute($subRoute);
 
     		if (isset($arguments[0]) && is_array($arguments[0])) {
     			$parameters = $arguments[0];
@@ -74,6 +64,6 @@ abstract class ApiResource
     		return $this->http->$name($route, $parameters);
     	}
         
-        throw new \Exception("Invalid resource http call '".class_name($this)."'");
+        throw new \Exception("Invalid resource http call '".get_class($this)."'");
     }  
 }

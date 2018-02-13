@@ -58,17 +58,5 @@ class HttpResponseTest extends TestCase
 
         $this->assertInstanceOf(Collection::class, $result);
         $this->assertEquals($result->toArray(), ['foo' => 'bar']);
-    }  
-
-    /**
-     * @test
-     * @group Unit
-     */
-    public function it_throws_exceptions_on_failure()
-    {
-        $this->expectException(\GuzzleHttp\Exception\ClientException::class);
-
-        $http = (new HttpClient(new Client))
-            ->request('GET', '/_abc_123_404');
-    }                  
+    }               
 }

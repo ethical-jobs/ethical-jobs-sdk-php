@@ -9,6 +9,16 @@ class Responses
 	/**
 	 * Authentication response
 	 *
+	 * @return String
+	 */
+	public static function token()
+	{
+		return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjZkMWY1NzhkNDFjZTg3ZTNmMDMzZDE1M2VmYmYzM2EzYmUzMjNjMzgyM2I2MmQ1YjVmOWFlOWU1ODk5YTA0NTZkZDUyMzI4ZGY5ZDg0NjU5In0';
+	}
+
+	/**
+	 * Authentication response
+	 *
 	 * @return GuzzleHttp\Psr7\Response
 	 */
 	public static function authentication($status = 200)
@@ -17,7 +27,7 @@ class Responses
 			{
 				"token_type": "Bearer",
 				"expires_in": 31536000,
-				"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjZkMWY1NzhkNDFjZTg3ZTNmMDMzZDE1M2VmYmYzM2EzYmUzMjNjMzgyM2I2MmQ1YjVmOWFlOWU1ODk5YTA0NTZkZDUyMzI4ZGY5ZDg0NjU5In0.eyJhdWQiOiIxIiwianRpIjoiNmQxZjU3OGQ0MWNlODdlM2YwMzNkMTUzZWZiZjMzYTNiZTMyM2MzODIzYjYyZDViNWY5YWU5ZTU4OTlhMDQ1NmRkNTIzMjhkZjlkODQ2NTkiLCJpYXQiOjE1MTgzNjczNzQsIm5iZiI6MTUxODM2NzM3NCwiZXhwIjoxNTQ5OTAzMzc0LCJzdWIiOiIiLCJzY29wZXMiOltdfQ.OSwqhasud92mHs19w1WDJ8cCbOTr_R66I502wOomyvuIPq_dsM4-cC4p5qACgMMTB7MlIecLdwiBmBf_421UVe-E56tKdKCK82EGVSTvMO0zr1849cJxnK9mLKcYhW6PrnvlnFi3sgyMtSyTa8vCQ6PSkqKujvoWmIWznbolqFqcesFU2GVW_e4ZFhov4MZGRXe4qjIbwvmx7dj5ABEpkXZRubIS4cZS_FDvmk2OjOB9FC5Lvk3HPeGWMxCWBytCuX1vqWg2hn2_c-e1iNu7Lr8r9qv4zoPqxuXemR1kzk8IAvxzVeNVaDBaPr4Y7xK0vB2EFSrqelGOErosTO0tIP3hWWRVvJf-F69-86i9_x3ci_b0sqasXA_z78Kipo3Mvu4hNsF96tJv0fzb5UWuWe9p23_mgVGQrgvVt53dycP4sxxvcT_1dmeXjis3YCKRaDbzkN7L_mxYJ9szqExGttHPVXsRRcyupC-MEFiLFxCXa_Qr9BsZce8KFm58xOdP6VphtyvDL_oYIjIG6nertyVbCtXZBfTBQ1_2Rc7Ya0uM-Pn4vCKKg-_EQ5V90bLZL1NfdHcowvtX1eCoMIaXiedGa_WkpeiP_Dpp_m4e5hKzwnUCew-ErFP143Ycii8kh_RbtxugtibYOZdKC6pwhfL88ZqtPQrM47eN9VHTW0c"
+				"access_token": "'.static::token().'"
 			}
 		';
 

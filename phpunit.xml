@@ -13,7 +13,7 @@
 >
     <testsuites>
         <testsuite name="ethical-jobs-sdk-php Test Suite">
-            <directory>./tests/</directory>
+            <directory suffix=".php">./tests/</directory>
         </testsuite>
     </testsuites>
     <filter>

@@ -69,11 +69,15 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function bindAuthenticator()
     {    
-        $this->app->bind(Authentication\Authenticator::class, function ($app) {
-            $cache = $app->make(Repository::class);
+        $credentials = [
+            'client_id'     => env('AUTH_SERVICE_CLIENT_ID'),
+            'client_secret' => env('AUTH_SERVICE_CLIENT_SECRET'),
+        ];
+
+        $this->app->bind(Authentication\Authenticator::class, function ($app) use ($credentials) {
             $client = $app->make(GuzzleHttp\Client::class);
-            $http = new HttpClient($client, null, $app->environment());
-            return new Authentication\TokenAuthenticator($http, $cache);
+            $cache = $app->make(Repository::class);
+            return new Authentication\TokenAuthenticator($client, $cache, $credentials);
         });
     }
 
@@ -85,9 +89,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function bindHttpClient()
     { 
         $this->app->bind(HttpClient::class, function ($app) {
-            $auth = $app->make(Authentication\Authenticator::class);
             $client = $app->make(GuzzleHttp\Client::class);
-            return new HttpClient($client, $auth, $app->environment());
+            $auth = $app->make(Authentication\Authenticator::class);
+            return new HttpClient($client, $auth);
         });
     }
 

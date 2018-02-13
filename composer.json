@@ -24,7 +24,8 @@
         "mockery/mockery": "1.0.*",
         "codedungeon/phpunit-result-printer": "^0.5.3",
         "illuminate/support": "^5.4",
-        "orchestra/testbench": "~3.4"
+        "orchestra/testbench": "~3.4",
+        "hirak/prestissimo": "^0.3.7"
     },
     "autoload": {
         "psr-4": {
@@ -37,5 +38,15 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EthicalJobs\\SDK\\Laravel\\ServiceProvider"
+            ],
+            "aliases": {
+                "EthicalJobs": "EthicalJobs\\SDK\\Laravel\\ApiFacade"
+            }            
+        }
+    } 
 }

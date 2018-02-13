@@ -4,6 +4,7 @@ namespace EthicalJobs\SDK;
 
 use GuzzleHttp\Psr7\Request;
 use EthicalJobs\SDK\Repositories\ResourceRepository;
+use EthicalJobs\SDK\Router;
 
 /**
  * EthicalJobs api client

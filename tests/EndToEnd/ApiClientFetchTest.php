@@ -2,17 +2,17 @@
 
 namespace EthicalJobs\Tests\SDK;
 
-use Illuminate\Contracts\Cache\Repository;
+use GuzzleHttp\Client;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Handler\MockHandler;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Illuminate\Contracts\Cache\Repository;
 use EthicalJobs\SDK\Authentication\TokenAuthenticator;
+use EthicalJobs\Tests\SDK\Fixtures;
 use EthicalJobs\SDK\HttpClient;
 use EthicalJobs\SDK\ApiClient;
-use GuzzleHttp\Client;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
-use EthicalJobs\Tests\SDK\Fixtures;
 
 class ApiClientFetchTest extends TestCase
 {
