@@ -3,6 +3,7 @@
 namespace EthicalJobs\SDK\Laravel;
 
 use Illuminate\Support\Facades\Facade;
+use EthicalJobs\SDK\ApiClient;
 
 /**
  * Laravel facade accessor
