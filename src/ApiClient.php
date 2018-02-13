@@ -31,6 +31,21 @@ class ApiClient
 	}
 
 	/**
+	 * Resource accessor
+	 * 
+	 * @param  String $resourceName
+	 * @return EthicalJobs\SDK\Resources\ApiResource
+	 */
+   	public function resource($resourceName)
+   	{	
+   		if ($resource = ResourceRepository::find($resourceName)) {
+   			return $resource;
+   		}
+
+   		throw new \Exception("Invalid api resource '{$resourceName}'");
+   	}
+
+	/**
 	 * Dynamic api resource properties
 	 * 
 	 * @param  String $resourceName
@@ -38,11 +53,7 @@ class ApiClient
 	 */
    	public function __get($resourceName)
    	{
-   		if ($resource = ResourceRepository::find($resourceName)) {
-   			return $resource;
-   		}
-
-   		throw new \Exception("Invalid api resource '{$resourceName}'");
+   		return $this->resource($resourceName);
    	}	
 
    	/**

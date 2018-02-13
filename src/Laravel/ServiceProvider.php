@@ -98,7 +98,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function bindApiClient()
     { 
-        $this->app->bind(ApiClient::class, function ($app) {
+        $this->app->singleton(ApiClient::class, function ($app) {
             $http = $app->make(HttpClient::class);
             return new ApiClient($http);
         });        

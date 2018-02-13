@@ -2,9 +2,11 @@
 
 `composer require ethical-jobs/ethical-jobs-sdk`
 
-Include the service provider in you `config/app.php` file 
+Include the service provider and facade in you `config/app.php` file 
 
 `EthicalJobs\SDK\Laravel\ServiceProvider::class`
+
+`'EthicalJobs' => EthicalJobs\SDK\Laravel\ApiFacade::class,`
 
 ## Making Requests
 
@@ -12,34 +14,34 @@ There are many ways to access api resources, following are some examples:
 
 ```php
 // GET /jobs
-$client->get(['status' => 'APPROVED']);
+EthicalJobs::get(['status' => 'APPROVED']);
 
 // GET /jobs/drafts
-$client->get('/jobs/drafts', ['status' => 'APPROVED']);
+EthicalJobs::get('/jobs/drafts', ['status' => 'APPROVED']);
 
 // GET /jobs/drafts
-$client->jobs->get('/drafts', ['status' => 'APPROVED']);
+EthicalJobs::resource('jobs')->get('/drafts', ['status' => 'APPROVED']);
 
 // GET /jobs/214
-$client->jobs->get('214');
+EthicalJobs::resource('jobs')->get('214');
 
 // GET /jobs/214
-$client->jobs->get('/214');
+EthicalJobs::resource('jobs')->get('/214');
 
 // GET /jobs/214
-$client->get('/jobs/214');
+EthicalJobs::get('/jobs/214');
 
 // GET /jobs { status: APPROVED, expired: false }
-$client->jobs->approved();
+EthicalJobs::resource('jobs')->approved();
 
 // GET /jobs { expired: true }
-$client->jobs->expired();
+EthicalJobs::resource('jobs')->expired();
 
 // POST /jobs { ... }
-$client->post('/jobs', ['title' => 'React Developer', 'description' => 'We are looking for...']);
+EthicalJobs::post('/jobs', ['title' => 'React Developer', 'description' => 'We are looking for...']);
 
 // PATCH /jobs/214 { title: 'React Developer' }
-$client->jobs->patch('214', ['title' => 'React Developer']);
+EthicalJobs::resource('jobs')->patch('214', ['title' => 'React Developer']);
 ```
 
 ## Responses
