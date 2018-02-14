@@ -28,10 +28,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-
-    }
+    public function boot() {}
 
     /**
      * Bind Repository interfaces to their appropriate implementations.
@@ -58,7 +55,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         // Bind guzzle into the container for testing.
         $this->app->bind(GuzzleHttp\Client::class, function ($app) {
-            return new GuzzleHttp\Client(['verify' => false]);
+            return new GuzzleHttp\Client(['verify' => false]); // Disable SSL cert verification.
         });        
     }
 
