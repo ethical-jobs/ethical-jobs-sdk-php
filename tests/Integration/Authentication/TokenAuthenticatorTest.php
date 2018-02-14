@@ -17,8 +17,15 @@ class TokenAuthenticatorTest extends TestCase
      * @test
      * @group Unit
      */
-    public function it_can_get_its_token_from_cache()
+    public function it_can_set_its_credentials_and_get_its_token_from_cache()
     {
+        $credentials = [
+            'client_id'     => '21',
+            'client_secret' => 'aksus73j37sh363hsjs83h37sh363hsjksmde',
+            'username'      => 'service-account@ethicaljobs.com.au',
+            'password'      => base64_encode('giant-swamp-mattress'),
+        ];
+
         $response = Responses::authentication(200);
 
         $client = Mockery::mock(Client::class)
@@ -29,12 +36,14 @@ class TokenAuthenticatorTest extends TestCase
                 'http://api-app/oauth/token',
                 [
                     'json' => [
-                        'grant_type'    => 'client_credentials',
+                        'grant_type'    => 'password',
                         'scope'         => '*',       
-                        'client_id'     => '',
-                        'client_secret' => '',
+                        'client_id'     => $credentials['client_id'],
+                        'client_secret' => $credentials['client_secret'],
+                        'username'      => $credentials['username'],
+                        'password'      => 'giant-swamp-mattress',
                     ],
-                ]
+                ],
             ])
             ->andReturn($response)
             ->getMock();               
@@ -52,7 +61,7 @@ class TokenAuthenticatorTest extends TestCase
             ])
             ->getMock();  
 
-        (new TokenAuthenticator($client, $cache))
+        (new TokenAuthenticator($client, $cache, $credentials))
             ->getToken();
     }    
 
@@ -82,55 +91,5 @@ class TokenAuthenticatorTest extends TestCase
         ];
 
         $this->assertEquals($expected, $authenticated->getHeaders());
-    }    
-
-    /**
-     * @test
-     * @group Unit
-     */
-    public function it_sets_its_credentials()
-    {
-        $response = Responses::authentication(200);
-
-        $credentials = [
-            'client_id'     => 'ci-123',
-            'client_secret' => 'cs-123',                  
-        ];
-
-        $client = Mockery::mock(Client::class)
-            ->shouldReceive('request')
-            ->once()
-            ->withArgs([
-                'POST',
-                'http://api-app/oauth/token',
-                [
-                    'json' => [
-                        'grant_type'    => 'client_credentials',
-                        'scope'         => '*',       
-                        'client_id'     => 'ci-123',
-                        'client_secret' => 'cs-123',
-                    ],
-                ]
-            ])
-            ->andReturn($response)
-            ->getMock();               
-
-        $cache = Mockery::mock(Repository::class)
-            ->shouldReceive('remember')
-            ->once()
-            ->withArgs([
-                'ej:pkg:sdk:token',
-                60,
-                Mockery::on(function($callback) {
-                    $callback();
-                    return true;
-                }),
-            ])
-            ->getMock();  
-
-        $request = new Request('GET', 'https://github.com/stars');
-
-        $authenticated = (new TokenAuthenticator($client, $cache, $credentials))
-            ->authenticate($request);
-    }       
+    }        
 }

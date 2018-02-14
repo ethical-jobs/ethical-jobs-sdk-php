@@ -98,6 +98,10 @@ class TokenAuthenticator implements Authenticator
 	 */
 	public function setCredentials(Array $credentials)
 	{
+		if (isset($credentials['password'])) {
+			$credentials['password'] = base64_decode($credentials['password']);
+		}
+
 		$this->credentials = $credentials;
 
 		return $this;
