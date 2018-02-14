@@ -255,6 +255,7 @@ class HttpClient
 	{
 		return array_merge([
 			'Content-Type' => 'application/json',
+			'Accept'	   => 'application/json',
 		], $headers);
 	}					
 }

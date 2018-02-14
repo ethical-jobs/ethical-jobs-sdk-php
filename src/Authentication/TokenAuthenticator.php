@@ -52,6 +52,8 @@ class TokenAuthenticator implements Authenticator
 	protected $credentials = [
     	'client_id' 	=> '',
     	'client_secret' => '',		
+    	'username' 		=> '',	
+    	'password' 		=> '',	
 	];	
 
 	/**
@@ -96,13 +98,7 @@ class TokenAuthenticator implements Authenticator
 	 */
 	public function setCredentials(Array $credentials)
 	{
-		if (isset($credentials['client_id'])) {
-			$this->credentials['client_id'] = $credentials['client_id'];
-		}
-
-		if (isset($credentials['client_secret'])) {
-			$this->credentials['client_secret'] = $credentials['client_secret'];
-		}
+		$this->credentials = $credentials;
 
 		return $this;
 	}
@@ -118,7 +114,7 @@ class TokenAuthenticator implements Authenticator
 		$route = Router::getRouteUrl('/oauth/token');
 
 		$json = array_merge([
-        	'grant_type' 	=> 'client_credentials',
+        	'grant_type' 	=> 'password',
         	'scope' 		=> '*',			
 		], $this->credentials);
 

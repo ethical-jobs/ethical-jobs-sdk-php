@@ -70,8 +70,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function bindAuthenticator()
     {    
         $credentials = [
-            'client_id'     => env('AUTH_SERVICE_CLIENT_ID'),
-            'client_secret' => env('AUTH_SERVICE_CLIENT_SECRET'),
+            'client_id'     => env('AUTH_CLIENT_ID'),
+            'client_secret' => base64_decode(env('AUTH_CLIENT_SECRET')),
+            'username'      => env('AUTH_SERVICE_USERNAME'),
+            'password'      => base64_decode(env('AUTH_SERVICE_PASSWORD')),            
         ];
 
         $this->app->bind(Authentication\Authenticator::class, function ($app) use ($credentials) {

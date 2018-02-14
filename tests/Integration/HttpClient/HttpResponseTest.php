@@ -42,7 +42,7 @@ class HttpResponseTest extends TestCase
     {
         $response = new Response(
             201, 
-            ['Content-Type' => 'application/json'],
+            ['Content-Type' => 'application/json','Accept' => 'application/json',],
             json_encode(['foo' => 'bar'])
         );
 

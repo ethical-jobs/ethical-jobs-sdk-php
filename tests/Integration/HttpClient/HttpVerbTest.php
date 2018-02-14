@@ -40,7 +40,11 @@ class HttpVerbTest extends TestCase
             $expected = new Request(
                 strtoupper($verb), 
                 'http://api-app/jobs', 
-                ['Content-Type' => 'application/json','X-Custom' => 'foo'],
+                [
+                    'Content-Type' => 'application/json',
+                    'Accept'       => 'application/json',
+                    'X-Custom' => 'foo',
+                ],
                 json_encode(['foo' => 'bar'])
             );
 
