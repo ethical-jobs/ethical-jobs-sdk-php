@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Collection;
+use GuzzleHttp\Exception\ClientException;
 use EthicalJobs\SDK\Authentication\Authenticator;
 use EthicalJobs\SDK\Router;
 
@@ -134,17 +135,15 @@ class HttpClient
 	 * @param  array  $headers 
 	 * @return Illuminate\Support\Collection         
 	 */
-	public function request(string $verb, string $route, $body = [], $headers = [])
+	public function request(string $verb, string $route, $body = [], $headers = []): Collection
 	{
 		$request = $this->createRequest($verb, $route, $body, $headers);
 
 		$request = $this->authenticateRequest($request);
 
-		$response = $this->dispatchRequest($request);
+		$collection = $this->dispatchRequest($request);
 
-		$this->response = $response;
-
-		return $this->parseResponse($response);
+		return $collection;
 	}
 
 	/**
@@ -222,16 +221,32 @@ class HttpClient
 	 * Dispatches a request and returns a response instance
 	 *
 	 * @param GuzzleHttp\Psr7\Request $request
-	 * @return GuzzleHttp\Psr7\Response
+	 * @return Illuminate\Support\Collection
 	 */
-	protected function dispatchRequest(Request $request)
+	protected function dispatchRequest(Request $request): Collection
 	{
-		return $this->client->send($request);
+		try {
+			$response = $this->client->send($request);	
+
+			$this->response = $response;
+
+			return $this->parseResponse($response);
+		} catch (ClientException $exception) {
+
+			$this->response = $exception->getResponse();
+
+			if ($response->getStatusCode() === 404) {
+				return new Collection;
+			}
+
+			throw $exception;
+		}
 	}
 
 	/**
 	 * Prases a response and returns a collection or item
-	 * 
+	 *
+	 * @param GuzzleHttp\Psr7\Response $response
 	 * @return Illuminate\Support\Collection
 	 */
 	protected function parseResponse(Response $response)
@@ -240,10 +255,10 @@ class HttpClient
             if ($body = json_decode($response->getBody()->getContents(), 1)) {
             	return new Collection($body);
             }			
-
-            return new Collection([]);
 		}
-	}	
+		
+        return new Collection;		
+	}		
 
 	/**
 	 * Merges degfault headers with user defined headers

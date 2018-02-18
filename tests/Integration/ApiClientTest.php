@@ -3,6 +3,8 @@
 namespace EthicalJobs\Tests\SDK;
 
 use Mockery;
+use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use EthicalJobs\SDK\HttpClient;
 use EthicalJobs\SDK\Resources;
@@ -55,17 +57,19 @@ class ApiClientTest extends TestCase
      */
     public function it_has_request_method()
     {
+        $response = new Collection;
+
         $http = Mockery::mock(HttpClient::class)
             ->shouldReceive('request')
             ->once()
             ->withAnyArgs(['GET', '/jobs', ['status' => 'APPROVED']])
-            ->andReturn('success')
+            ->andReturn($response)
             ->getMock();
 
         $client = new ApiClient($http);
 
         $result = $client->request('GET', '/jobs', ['status' => 'APPROVED']);
 
-        $this->assertEquals('success', $result);
+        $this->assertInstanceOf(Collection::class, $result);
     }          
 }

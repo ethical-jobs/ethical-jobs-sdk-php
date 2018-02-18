@@ -10,14 +10,14 @@ You will need to set 4 environment variables to enable authentication:
 
 ```json
 {
-    AUTH_CLIENT_ID: "The client id of the oauth grant",
-    AUTH_CLIENT_SECRET: "The client secret of the oauth grant",
-    AUTH_SERVICE_USERNAME: "Username or email of the user",
-    AUTH_SERVICE_PASSWORD: "Base64 encoded password of the user",
+    "AUTH_CLIENT_ID": "The client id of the oauth grant",
+    "AUTH_CLIENT_SECRET": "The client secret of the oauth grant",
+    "AUTH_SERVICE_USERNAME": "Username or email of the user",
+    "AUTH_SERVICE_PASSWORD": "Base64 encoded password of the user",
 }
 ```
 
-Authentication is made using `oauth2` and JWT tokens are returned and attached to headers as bearer tokens.
+Authentication is made using `oauth2` and JWT tokens are returned and attached to headers as bearer tokens. The grant type is a `password` grant and thus its attached to a user model and thus the users access rights and roles.
 
 ## Making Requests
 
