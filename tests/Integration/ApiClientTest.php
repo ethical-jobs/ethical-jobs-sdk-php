@@ -6,6 +6,7 @@ use Mockery;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 use EthicalJobs\SDK\HttpClient;
 use EthicalJobs\SDK\Resources;
 use EthicalJobs\SDK\ApiClient;
@@ -71,5 +72,59 @@ class ApiClientTest extends TestCase
         $result = $client->request('GET', '/jobs', ['status' => 'APPROVED']);
 
         $this->assertInstanceOf(Collection::class, $result);
-    }          
+    } 
+
+   /**
+     * @test
+     * @group Unit
+     */
+    public function it_can_retrieve_app_data()
+    {
+        $http = Mockery::mock(HttpClient::class)
+            ->shouldReceive('get')
+            ->once()
+            ->with('/')
+            ->andReturn(new Collection(['data' => []]))
+            ->getMock();
+
+        $client = new ApiClient($http);
+
+        $results = $client->appData();
+
+        $this->assertInstanceOf(Collection::class, $results);
+        $this->assertEquals($results->toArray(), ['data' => []]);
+    }                 
+
+   /**
+     * @test
+     * @group Unit
+     */
+    public function it_can_cache_app_data()
+    {
+        $returnValue = new Collection(['data' => []]);
+
+        $valudateCacheClosure = Mockery::on(function ($colsure) {
+            $colsure();
+            return true;
+        });
+
+        Cache::shouldReceive('remember')
+            ->once()
+            ->with('ej:sdk:app-data', 120, $valudateCacheClosure)
+            ->andReturn($returnValue);
+
+        $http = Mockery::mock(HttpClient::class)
+            ->shouldReceive('get')
+            ->once()
+            ->with('/')
+            ->andReturn($returnValue)
+            ->getMock();
+
+        $client = new ApiClient($http);
+
+        $results = $client->appData();
+
+        $this->assertInstanceOf(Collection::class, $results);
+        $this->assertEquals($results->toArray(), $returnValue->toArray());
+    }       
 }

@@ -3,6 +3,7 @@
 namespace EthicalJobs\SDK;
 
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Cache;
 use EthicalJobs\SDK\Repositories\ResourceRepository;
 use EthicalJobs\SDK\Router;
 
@@ -45,6 +46,18 @@ class ApiClient
 
    		throw new \Exception("Invalid api resource '{$resourceName}'");
    	}
+
+	/**
+	 * Retrieves app-data from `api.ethicaljobs.com.au/` base route
+	 * 
+	 * @return Illuminate\Support\Collection
+	 */
+   	public function appData()
+   	{
+        return Cache::remember('ej:sdk:app-data', 120, function(){
+            return $this->http->get('/');
+        });		
+   	}	   	
 
 	/**
 	 * Dynamic api resource properties

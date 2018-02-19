@@ -235,7 +235,7 @@ class HttpClient
 
 			$this->response = $exception->getResponse();
 
-			if ($response->getStatusCode() === 404) {
+			if ($this->response->getStatusCode() === 404) {
 				return new Collection;
 			}
 
