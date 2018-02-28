@@ -23,7 +23,7 @@ class TokenAuthenticatorTest extends TestCase
             'client_id'     => '21',
             'client_secret' => 'aksus73j37sh363hsjs83h37sh363hsjksmde',
             'username'      => 'service-account@ethicaljobs.com.au',
-            'password'      => base64_encode('giant-swamp-mattress'),
+            'password'      => 'giant-swamp-mattress',
         ];
 
         $response = Responses::authentication(200);
@@ -41,7 +41,7 @@ class TokenAuthenticatorTest extends TestCase
                         'client_id'     => $credentials['client_id'],
                         'client_secret' => $credentials['client_secret'],
                         'username'      => $credentials['username'],
-                        'password'      => 'giant-swamp-mattress',
+                        'password'      => $credentials['password'],
                     ],
                 ],
             ])
@@ -53,7 +53,7 @@ class TokenAuthenticatorTest extends TestCase
             ->once()
             ->withArgs([
                 'ej:pkg:sdk:token',
-                60,
+                1080,
                 Mockery::on(function($callback) {
                     $this->assertEquals(Responses::token(), $callback());
                     return true;

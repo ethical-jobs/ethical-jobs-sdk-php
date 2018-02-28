@@ -28,7 +28,7 @@ class TokenAuthenticator implements Authenticator
 	 *
 	 * @var string
 	 */
-	protected $tokenTTL = 60; // refresh the token every hour
+	protected $tokenTTL = 1080; // refresh the token once a week
 
 	/**
 	 * Guzzle client
@@ -98,10 +98,6 @@ class TokenAuthenticator implements Authenticator
 	 */
 	public function setCredentials(Array $credentials)
 	{
-		if (isset($credentials['password'])) {
-			$credentials['password'] = base64_decode($credentials['password']);
-		}
-
 		$this->credentials = $credentials;
 
 		return $this;
