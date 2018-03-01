@@ -25,19 +25,10 @@ There are many ways to access api resources, following are some examples:
 
 ```php
 // GET /jobs
-EthicalJobs::get(['status' => 'APPROVED']);
+EthicalJobs::get('/jobs', ['status' => 'APPROVED']);
 
 // GET /jobs/drafts
 EthicalJobs::get('/jobs/drafts', ['status' => 'APPROVED']);
-
-// GET /jobs/drafts
-EthicalJobs::resource('jobs')->get('/drafts', ['status' => 'APPROVED']);
-
-// GET /jobs/214
-EthicalJobs::resource('jobs')->get('214');
-
-// GET /jobs/214
-EthicalJobs::resource('jobs')->get('/214');
 
 // GET /jobs/214
 EthicalJobs::get('/jobs/214');
@@ -50,9 +41,6 @@ EthicalJobs::resource('jobs')->expired();
 
 // POST /jobs { ... }
 EthicalJobs::post('/jobs', ['title' => 'React Developer', 'description' => 'We are looking for...']);
-
-// PATCH /jobs/214 { title: 'React Developer' }
-EthicalJobs::resource('jobs')->patch('214', ['title' => 'React Developer']);
 ```
 
 ## Responses

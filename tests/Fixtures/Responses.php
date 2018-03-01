@@ -34,6 +34,45 @@ class Responses
 		return new Response($status, [], $body);
 	}
 
+
+	/**
+	 * Job resource response
+	 *
+	 * @return GuzzleHttp\Psr7\Response
+	 */
+	public static function job($status = 200)
+	{
+		$body = '
+			{
+			  "data": {
+			    "entities": {
+			      "jobs": {
+			        "97954": {
+			          "_score": null,
+			          "id": 97954,
+			          "organisation_id": 4247,
+			          "organisation_uid": "MarrickvilleLC",
+			          "status": "PENDING",
+			          "title": "Paralegal",
+			          "locked": false,
+			          "locked_by_avatar": "",
+			          "expired": false,
+			          "views": 0,
+			          "clicks": "N/A",
+			          "locations": [
+			            3
+			          ],
+			          "created_at": 1518420833000
+			        }
+			    },
+			    "result": 97954
+			  }
+			}
+		';
+
+		return new Response($status, [], $body);
+	}		
+
 	/**
 	 * Jobs resource response
 	 *

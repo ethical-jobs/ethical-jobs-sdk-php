@@ -33,7 +33,7 @@ class ApiClientFetchTest extends TestCase
 
         $apiClient = App::make(ApiClient::class);
 
-        $results = $apiClient->jobs->get([
+        $results = $apiClient->get('/jobs', [
             'status'    => 'APPROVED',
             'limit'     => 10,
         ]);
