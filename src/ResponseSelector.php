@@ -88,4 +88,15 @@ class ResponseSelector
 	{
 		return array_get($this->response, "data.entities.$entity.$id", []);
 	}	
+
+	/**
+	 * Returns an entitites array
+	 *
+	 * @param string $entities
+	 * @return array
+	 */
+	public function entities(string $entities): array
+	{
+		return array_get($this->response, "data.entities.$entities", []);
+	}		
 }
