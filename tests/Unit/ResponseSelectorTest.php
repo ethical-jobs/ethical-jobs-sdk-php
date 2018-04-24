@@ -12,9 +12,9 @@ class ResponseSelectorTest extends TestCase
      */
     public function it_can_set_and_get_ites_response()
     {
-        $responseOne = [ 'data' => [ 'foo' => 'bar'] ];
+        $responseOne = collect([ 'data' => [ 'foo' => 'bar'] ]);
 
-        $responseTwo = [ 'datum' => [ 'foo' => 'bar-bar-bar'] ];
+        $responseTwo = collect([ 'datum' => [ 'foo' => 'bar-bar-bar'] ]);
 
         $selector = new ResponseSelector($responseOne);
 
@@ -31,7 +31,7 @@ class ResponseSelectorTest extends TestCase
      */
     public function it_can_select_an_entity_by_result()
     {
-        $response = [
+        $response = collect([
             'data' => [
                 'entities'  => [
                     'jobs'  => [
@@ -47,7 +47,7 @@ class ResponseSelectorTest extends TestCase
                 ],
                 'result' => 276,
             ],
-        ];
+        ]);
 
         $selector = new ResponseSelector($response);
 
@@ -60,7 +60,7 @@ class ResponseSelectorTest extends TestCase
      */
     public function it_returns_empty_array_when_params_are_invalid()
     {
-        $response = [
+        $response = collect([
             'data' => [
                 'entities'  => [
                     'jobs'  => [
@@ -76,13 +76,13 @@ class ResponseSelectorTest extends TestCase
                 ],
                 'result' => 7363,
             ],
-        ];
+        ]);
 
         $selector = new ResponseSelector($response);
 
         $this->assertEquals($selector->byResult('foobar'), []);
 
-        $response['data']['result'] = 82722;
+        $response->put('data.result', 9873678);
 
         $this->assertEquals($selector->byResult('users'), []);
     }           
