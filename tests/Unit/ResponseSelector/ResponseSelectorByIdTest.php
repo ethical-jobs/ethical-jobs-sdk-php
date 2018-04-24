@@ -4,32 +4,13 @@ namespace EthicalJobs\Tests\SDK;
 
 use EthicalJobs\SDK\ResponseSelector;
 
-class ResponseSelectorTest extends TestCase
+class ResponseSelectorByIdTest extends TestCase
 {
     /**
      * @test
      * @group Unit
      */
-    public function it_can_set_and_get_ites_response()
-    {
-        $responseOne = collect([ 'data' => [ 'foo' => 'bar'] ]);
-
-        $responseTwo = collect([ 'datum' => [ 'foo' => 'bar-bar-bar'] ]);
-
-        $selector = ResponseSelector::select($responseOne);
-
-        $this->assertEquals($selector->getResponse(), $responseOne);
-
-        $this->assertInstanceOf(ResponseSelector::class, $selector->setResponse($responseTwo));
-
-        $this->assertEquals($selector->getResponse(), $responseTwo);
-    }    
-
-    /**
-     * @test
-     * @group Unit
-     */
-    public function it_can_select_an_entity_by_result()
+    public function it_can_select_an_entity_by_Id()
     {
         $response = collect([
             'data' => [
@@ -49,7 +30,7 @@ class ResponseSelectorTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals(ResponseSelector::select($response)->byResult('users'), ['id' => 276, 'name' => 'Andrew']);
+        $this->assertEquals(ResponseSelector::select($response)->byId('jobs', 827), ['id' => 827, 'title' => 'Developer']);
     }        
 
     /**
@@ -76,10 +57,8 @@ class ResponseSelectorTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals(ResponseSelector::select($response)->byResult('foobar'), []);
+        $this->assertEquals(ResponseSelector::select($response)->byId('foobar', 292992929), []);
 
-        $response->put('data.result', 9873678);
-
-        $this->assertEquals(ResponseSelector::select($response)->byResult('users'), []);
+        $this->assertEquals(ResponseSelector::select($response)->byId('users', 298298), []);
     }           
 }

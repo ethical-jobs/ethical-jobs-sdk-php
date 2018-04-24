@@ -76,4 +76,16 @@ class ResponseSelector
 
 		return array_get($this->response, "data.entities.$entity.$result", []);
 	}
+
+	/**
+	 * Returns an entity by id
+	 *
+	 * @param string $entity
+	 * @param int $id
+	 * @return array
+	 */
+	public function byId(string $entity, int $id): array
+	{
+		return array_get($this->response, "data.entities.$entity.$id", []);
+	}	
 }
