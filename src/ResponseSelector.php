@@ -22,10 +22,10 @@ class ResponseSelector
 	/**
 	 * Object constructor
 	 *
-	 * @param Illuminate\Support\Collection $response
+	 * @param iterable $response
 	 * @return void
 	 */
-	private function __construct(Collection $response)
+	private function __construct(iterable $response)
 	{
 		$this->setResponse($response);
 	}	
@@ -33,10 +33,10 @@ class ResponseSelector
 	/**
 	 * Static class instantiation
 	 *
-	 * @param Illuminate\Support\Collection $response
+	 * @param iterable $response
 	 * @return $this
 	 */
-	public static function select(Collection $response): ResponseSelector
+	public static function select(iterable $response): ResponseSelector
 	{
 		return new static($response);
 	}	
@@ -44,11 +44,15 @@ class ResponseSelector
 	/**
 	 * Sets the current response array
 	 *
-	 * @param Illuminate\Support\Collection $response
+	 * @param iterable $response
 	 * @return $this
 	 */
-	public function setResponse(Collection $response): ResponseSelector
+	public function setResponse(iterable $response): ResponseSelector
 	{
+		if (! $response instanceof Collection) {
+			$response = collect($response);
+		}
+
 		$this->response = $response;
 
 		return $this;

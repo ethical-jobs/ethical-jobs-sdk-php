@@ -24,4 +24,19 @@ class ResponseSelectorTest extends TestCase
 
         $this->assertEquals($selector->getResponse(), $responseTwo);
     }    
+
+    /**
+     * @test
+     * @group Unit
+     */
+    public function it_can_set_arrays_as_a_response()
+    {
+        $response = [ 'data' => [ 'foo' => 'bar'] ];
+
+        $selector = ResponseSelector::select($response);
+
+        $this->assertTrue(is_iterable($selector->getResponse()));
+
+        $this->assertEquals($selector->getResponse(), collect($response));
+    }        
 }
