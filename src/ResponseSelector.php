@@ -25,9 +25,20 @@ class ResponseSelector
 	 * @param Illuminate\Support\Collection $response
 	 * @return void
 	 */
-	public function __construct(Collection $response)
+	private function __construct(Collection $response)
 	{
 		$this->setResponse($response);
+	}	
+
+	/**
+	 * Static class instantiation
+	 *
+	 * @param Illuminate\Support\Collection $response
+	 * @return $this
+	 */
+	public static function select(Collection $response): ResponseSelector
+	{
+		return new static($response);
 	}	
 
 	/**

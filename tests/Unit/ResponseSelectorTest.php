@@ -16,7 +16,7 @@ class ResponseSelectorTest extends TestCase
 
         $responseTwo = collect([ 'datum' => [ 'foo' => 'bar-bar-bar'] ]);
 
-        $selector = new ResponseSelector($responseOne);
+        $selector = ResponseSelector::select($responseOne);
 
         $this->assertEquals($selector->getResponse(), $responseOne);
 
@@ -49,9 +49,7 @@ class ResponseSelectorTest extends TestCase
             ],
         ]);
 
-        $selector = new ResponseSelector($response);
-
-        $this->assertEquals($selector->byResult('users'), ['id' => 276, 'name' => 'Andrew']);
+        $this->assertEquals(ResponseSelector::select($response)->byResult('users'), ['id' => 276, 'name' => 'Andrew']);
     }        
 
     /**
@@ -78,12 +76,10 @@ class ResponseSelectorTest extends TestCase
             ],
         ]);
 
-        $selector = new ResponseSelector($response);
-
-        $this->assertEquals($selector->byResult('foobar'), []);
+        $this->assertEquals(ResponseSelector::select($response)->byResult('foobar'), []);
 
         $response->put('data.result', 9873678);
 
-        $this->assertEquals($selector->byResult('users'), []);
+        $this->assertEquals(ResponseSelector::select($response)->byResult('users'), []);
     }           
 }
