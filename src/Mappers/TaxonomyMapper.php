@@ -41,12 +41,8 @@ class TaxonomyMapper implements MapperInterface
     }
 
     /**
-     * Select taxonomy from array
-     *
-     * @param int $taxonomyId
-     * @param $type string The name of the taxonomy
-     * @return string
-    */
+     * {@inheritdoc}
+     */ 
     public function map(int $taxonomyId, string $type): string
     {
         return $this->dictionary[$type][$taxonomyId]['title'] ?? '';

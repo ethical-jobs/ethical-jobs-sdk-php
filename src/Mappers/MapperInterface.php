@@ -13,8 +13,8 @@ interface MapperInterface
     /**
      * Maps the data
      *
-     * @param $taxonomyId
-     * @param $type
+     * @param int $taxonomyId
+     * @param string $type
      * @return string
      */
     public function map(int $taxonomyId, string $type): string;
