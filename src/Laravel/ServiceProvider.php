@@ -2,11 +2,13 @@
 
 namespace EthicalJobs\SDK\Laravel;
 
+use EthicalJobs\SDK\Mappers\TaxonomyMapper;
 use GuzzleHttp;
 use Illuminate\Contracts\Cache\Repository;
 use EthicalJobs\SDK\Authentication;
 use EthicalJobs\SDK\HttpClient;
 use EthicalJobs\SDK\ApiClient;
+use EthicalJobs\SDK\Mappers;
 
 /**
  * Laravel application service provider
@@ -100,11 +102,24 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      * @return  Void
      */
     public function bindApiClient()
-    { 
+    {
         $this->app->singleton(ApiClient::class, function ($app) {
             $http = $app->make(HttpClient::class);
             return new ApiClient($http);
-        });        
+        });
+    }
+
+    /**
+     * Bind api client
+     *
+     * @return  Void
+     */
+    public function bindTaxonomyMapper()
+    {
+        $this->app->bind(TaxonomyMapper::class, function ($app) {
+            $api = $app->make(ApiClient::class);
+            return new TaxonomyMapper($api);
+        });
     }
 
     /**
@@ -119,6 +134,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             Authentication\Authenticator::class,
             HttpClient::class,
             ApiClient::class,
+            Mappers\TaxonomyMapper::class,
         ];
     }        
 }
