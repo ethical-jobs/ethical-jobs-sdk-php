@@ -3,7 +3,7 @@
 namespace EthicalJobs\SDK\Resources;
 
 use EthicalJobs\SDK\Enumerables;
-use Illuminate\Support\Collection;
+use EthicalJobs\SDK\Collection;
 
 /**
  * Jobs api resource
@@ -25,7 +25,7 @@ class JobsResource extends ApiResource
    	 * Returns approved jobs
    	 *
    	 * @param Array $params
-   	 * @return Illuminate\Support\Collection
+   	 * @return EthicalJobs\SDK\Collection
 	 */		
 	public function approved($params = [])
 	{
@@ -38,8 +38,8 @@ class JobsResource extends ApiResource
 	/**
    	 * Patch a collection of jobs
    	 *
-   	 * @param Illuminate\Support\Collection $jobs
-   	 * @return Illuminate\Support\Collection
+   	 * @param EthicalJobs\SDK\Collection $jobs
+   	 * @return EthicalJobs\SDK\Collection
 	 */		
 	public function patchCollection(Collection $jobs)
 	{
@@ -49,8 +49,8 @@ class JobsResource extends ApiResource
 	/**
    	 * Put a collection of jobs
    	 *
-   	 * @param Illuminate\Support\Collection $jobs
-   	 * @return Illuminate\Support\Collection
+   	 * @param EthicalJobs\SDK\Collection $jobs
+   	 * @return EthicalJobs\SDK\Collection
 	 */		
 	public function putCollection(Collection $jobs)
 	{
@@ -60,8 +60,8 @@ class JobsResource extends ApiResource
 	/**
    	 * Chunk and make requests on a collection resource
    	 *
-   	 * @param Illuminate\Support\Collection $jobs
-   	 * @return Illuminate\Support\Collection
+   	 * @param EthicalJobs\SDK\Collection $jobs
+   	 * @return EthicalJobs\SDK\Collection
 	 */		
 	protected function collection($verb, Collection $jobs)
 	{

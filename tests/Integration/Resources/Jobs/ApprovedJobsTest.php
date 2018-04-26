@@ -3,10 +3,10 @@
 namespace EthicalJobs\Tests\SDK\Resources\Jobs;
 
 use Mockery;
-use Illuminate\Support\Collection;
 use EthicalJobs\SDK\Resources\JobsResource;
 use EthicalJobs\Tests\SDK\TestCase;
 use EthicalJobs\SDK\Enumerables;
+use EthicalJobs\SDK\Collection;
 use EthicalJobs\SDK\HttpClient;
 
 class ApprovedJobsTest extends TestCase

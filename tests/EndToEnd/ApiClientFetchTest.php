@@ -6,11 +6,11 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Handler\MockHandler;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Contracts\Cache\Repository;
 use EthicalJobs\SDK\Authentication\TokenAuthenticator;
 use EthicalJobs\Tests\SDK\Fixtures;
+use EthicalJobs\SDK\Collection;
 use EthicalJobs\SDK\HttpClient;
 use EthicalJobs\SDK\ApiClient;
 

@@ -3,6 +3,7 @@
 namespace EthicalJobs\Tests\SDK;
 
 use EthicalJobs\SDK\ResponseSelector;
+use EthicalJobs\SDK\Collection;
 
 class ResponseSelectorByResultTest extends TestCase
 {
@@ -12,7 +13,7 @@ class ResponseSelectorByResultTest extends TestCase
      */
     public function it_can_select_an_entity_by_result()
     {
-        $response = collect([
+        $response = new Collection([
             'data' => [
                 'entities'  => [
                     'jobs'  => [
@@ -39,7 +40,7 @@ class ResponseSelectorByResultTest extends TestCase
      */
     public function it_returns_empty_array_when_params_are_invalid()
     {
-        $response = collect([
+        $response = new Collection([
             'data' => [
                 'entities'  => [
                     'jobs'  => [

@@ -4,9 +4,9 @@ namespace EthicalJobs\Tests\SDK;
 
 use Mockery;
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
+use EthicalJobs\SDK\Collection;
 use EthicalJobs\SDK\HttpClient;
 use EthicalJobs\SDK\Resources;
 use EthicalJobs\SDK\ApiClient;
