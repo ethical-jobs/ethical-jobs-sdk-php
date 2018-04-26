@@ -4,7 +4,7 @@ namespace EthicalJobs\Tests\SDK;
 
 use EthicalJobs\SDK\ResponseSelector;
 
-class ResponseSelectorByIdTest extends TestCase
+class EntityByIdTest extends TestCase
 {
     /**
      * @test
@@ -30,7 +30,7 @@ class ResponseSelectorByIdTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals(ResponseSelector::select($response)->byId('jobs', 827), ['id' => 827, 'title' => 'Developer']);
+        $this->assertEquals(ResponseSelector::select($response)->entityById('jobs', 827), ['id' => 827, 'title' => 'Developer']);
     }        
 
     /**
@@ -57,8 +57,8 @@ class ResponseSelectorByIdTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals(ResponseSelector::select($response)->byId('foobar', 292992929), []);
+        $this->assertEquals(ResponseSelector::select($response)->entityById('foobar', 292992929), []);
 
-        $this->assertEquals(ResponseSelector::select($response)->byId('users', 298298), []);
+        $this->assertEquals(ResponseSelector::select($response)->entityById('users', 298298), []);
     }           
 }

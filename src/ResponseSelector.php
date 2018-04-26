@@ -74,7 +74,7 @@ class ResponseSelector
 	 * @param string $entity
 	 * @return array
 	 */
-	public function byResult(string $entity): array
+	public function entityByResult(string $entity): array
 	{
 		$result = array_get($this->response, "data.result", '');
 
@@ -88,10 +88,22 @@ class ResponseSelector
 	 * @param int $id
 	 * @return array
 	 */
-	public function byId(string $entity, int $id): array
+	public function entityById(string $entity, int $id): array
 	{
 		return array_get($this->response, "data.entities.$entity.$id", []);
 	}	
+
+	/**
+	 * Returns taxonomy term by id from app-data response
+	 *
+	 * @param string $taxonomy
+	 * @param int $id
+	 * @return array
+	 */
+	public function taxonomyTermById(string $taxonomy, int $id): array
+	{
+		return array_get($this->response, "data.taxonomies.$taxonomy.$id", []);
+	}		
 
 	/**
 	 * Returns an entitites array

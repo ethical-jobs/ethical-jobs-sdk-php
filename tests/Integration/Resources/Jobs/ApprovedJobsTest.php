@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 use EthicalJobs\SDK\Resources\JobsResource;
 use EthicalJobs\Tests\SDK\TestCase;
 use EthicalJobs\SDK\Enumerables;
-use EthicalJobs\SDK\HttpClient;
+use EthicalJobs\SDK\ApiClient;
 
 class ApprovedJobsTest extends TestCase
 {
@@ -17,7 +17,7 @@ class ApprovedJobsTest extends TestCase
      */
     public function it_can_return_approved_jobs()
     {
-        $http = Mockery::mock(HttpClient::class)
+        $api = Mockery::mock(ApiClient::class)
             ->shouldReceive('get')
             ->once()
             ->withArgs([
@@ -31,7 +31,7 @@ class ApprovedJobsTest extends TestCase
             ->andReturn(new Collection(['jobs' => []]))
             ->getMock();
 
-        $jobs = new JobsResource($http);
+        $jobs = new JobsResource($api);
 
         $results = $jobs->approved(['extra' => 'var']);
 
