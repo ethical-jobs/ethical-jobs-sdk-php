@@ -1,14 +1,11 @@
 <?php
 
-namespace Tests\Integration\Storage\QueryAdapters\Database;
+namespace EthicalJobs\Tests\SDK\Repositories\JobApiRepository;
 
-use Mockery;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Builder;
-use Tests\Fixtures\RepositoryFactory;
-use Tests\Fixtures\Person;
+use EthicalJobs\SDK\ApiClient;
+use EthicalJobs\SDK\Repositories\JobApiRepository;
 
-class FindByFieldTest extends \Tests\TestCase
+class FindByFieldTest extends \EthicalJobs\Tests\SDK\TestCase
 {
     /**
      * @test
@@ -16,49 +13,36 @@ class FindByFieldTest extends \Tests\TestCase
      */
     public function it_can_find_by_a_field()
     {
-        $expected = new Person;
+        $api = resolve(ApiClient::class);
 
-        $query = Mockery::mock(Builder::class)
-             ->shouldReceive('where')
-             ->once()
-             ->with('first_name', 'Andrew')
-             ->andReturn(Mockery::self())
-             ->shouldReceive('get')
-             ->once()
-             ->withNoArgs()
-             ->andReturn(collect([$expected]))
-             ->getMock();
+        $repository = new JobApiRepository($api);
 
-        $result = (RepositoryFactory::build(new Person))
-            ->setQuery($query)
-            ->findByField('first_name', 'Andrew');
-
-        $this->assertEquals($expected, $result);
+        
     }    
 
-    /**
-     * @test
-     * @group Unit
-     */
-    public function it_throws_http_404_exception_when_no_model_found()
-    {
-        $this->expectException(\Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class);
+    // /**
+    //  * @test
+    //  * @group Unit
+    //  */
+    // public function it_throws_http_404_exception_when_no_model_found()
+    // {
+    //     $this->expectException(\Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class);
 
-        $expected = new Person;
+    //     $expected = new Person;
 
-        $query = Mockery::mock(Builder::class)
-             ->shouldReceive('where')
-             ->once()
-             ->with('first_name', 'Andrew')
-             ->andReturn(Mockery::self())
-             ->shouldReceive('get')
-             ->once()
-             ->withNoArgs()
-             ->andReturn(null)
-             ->getMock();
+    //     $query = Mockery::mock(Builder::class)
+    //          ->shouldReceive('where')
+    //          ->once()
+    //          ->with('first_name', 'Andrew')
+    //          ->andReturn(Mockery::self())
+    //          ->shouldReceive('get')
+    //          ->once()
+    //          ->withNoArgs()
+    //          ->andReturn(null)
+    //          ->getMock();
 
-        (RepositoryFactory::build(new Person))
-            ->setQuery($query)
-            ->findByField('first_name', 'Andrew');
-    }         
+    //     (RepositoryFactory::build(new Person))
+    //         ->setQuery($query)
+    //         ->findByField('first_name', 'Andrew');
+    // }         
 }

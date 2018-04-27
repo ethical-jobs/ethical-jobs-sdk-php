@@ -2,10 +2,10 @@
 
 namespace EthicalJobs\Tests\SDK\Repositories;
 
-use Illuminate\Support\Collection;
 use EthicalJobs\SDK\Repositories\ResourceRepository;
 use EthicalJobs\Tests\SDK\TestCase;
 use EthicalJobs\SDK\Resources;
+use EthicalJobs\SDK\Collection;
 
 class ResourceRepositoryTest extends TestCase
 {

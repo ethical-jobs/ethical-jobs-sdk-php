@@ -50,7 +50,7 @@ class ApiClient
 	/**
 	 * Retrieves app-data from `api.ethicaljobs.com.au/` base route
 	 * 
-	 * @return Illuminate\Support\Collection
+	 * @return EthicalJobs\SDK\Collection
 	 */
    	public function appData()
    	{

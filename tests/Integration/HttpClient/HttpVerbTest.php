@@ -6,7 +6,7 @@ use Mockery;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Support\Collection;
+use EthicalJobs\SDK\Collection;
 use EthicalJobs\Tests\SDK\TestCase;
 use EthicalJobs\SDK\HttpClient;
 

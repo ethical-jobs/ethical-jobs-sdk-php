@@ -2,8 +2,6 @@
 
 namespace EthicalJobs\SDK;
 
-use Illuminate\Support\Collection;
-
 /**
  * Response selector
  *
@@ -15,9 +13,9 @@ class ResponseSelector
 	/**
 	 * Response array
 	 *
-	 * @var Illuminate\Support\Collection
+	 * @var EthicalJobs\SDK\Collection
 	 */
-	protected $response = [];
+	protected $response;
 
 	/**
 	 * Object constructor
@@ -25,9 +23,20 @@ class ResponseSelector
 	 * @param iterable $response
 	 * @return void
 	 */
-	private function __construct(iterable $response)
+	public function __construct(iterable $response)
 	{
 		$this->setResponse($response);
+	}	
+
+	/**
+	 * Static class instantiation
+	 *
+	 * @param iterable $response
+	 * @return $this
+	 */
+	public static function select(iterable $response): ResponseSelector
+	{
+		return new static($response);
 	}	
 
 	/**
@@ -39,7 +48,7 @@ class ResponseSelector
 	public function setResponse(iterable $response): ResponseSelector
 	{
 		if (! $response instanceof Collection) {
-			$response = collect($response);
+			$response = new Collection($response);
 		}
 
 		$this->response = $response;
@@ -50,23 +59,12 @@ class ResponseSelector
 	/**
 	 * Gets the current response
 	 *
-	 * @return Illuminate\Support\Collection
+	 * @return EthicalJobs\SDK\Collection
 	 */
 	public function getResponse(): Collection
 	{
-		return $this->response;
-	}		
-
-	/**
-	 * Static class instantiation
-	 *
-	 * @param iterable $response
-	 * @return $this
-	 */
-	public static function select(iterable $response): ResponseSelector
-	{
-		return new static($response);
-	}		
+		return $this->response ?? new Collection;
+	}	
 
 	/**
 	 * Returns an entity by current response result
@@ -74,7 +72,7 @@ class ResponseSelector
 	 * @param string $entity
 	 * @return array
 	 */
-	public function entityByResult(string $entity): array
+	public function byResult(string $entity): array
 	{
 		$result = array_get($this->response, "data.result", '');
 
@@ -88,22 +86,10 @@ class ResponseSelector
 	 * @param int $id
 	 * @return array
 	 */
-	public function entityById(string $entity, int $id): array
+	public function byId(string $entity, int $id): array
 	{
 		return array_get($this->response, "data.entities.$entity.$id", []);
 	}	
-
-	/**
-	 * Returns taxonomy term by id from app-data response
-	 *
-	 * @param string $taxonomy
-	 * @param int $id
-	 * @return array
-	 */
-	public function taxonomyTermById(string $taxonomy, int $id): array
-	{
-		return array_get($this->response, "data.taxonomies.$taxonomy.$id", []);
-	}		
 
 	/**
 	 * Returns an entitites array

@@ -2,7 +2,7 @@
 
 namespace EthicalJobs\SDK\Repositories;
 
-use Illuminate\Support\Collection;
+use EthicalJobs\SDK\Collection;
 use Illuminate\Support\Facades\App;
 use EthicalJobs\SDK\ApiClient;
 use EthicalJobs\SDK\Resources;
@@ -18,7 +18,7 @@ class ResourceRepository
     /**
      * Collection of api resources
      *
-     * @var Illuminate\Support\Collection
+     * @var EthicalJobs\SDK\Collection
      */
     protected $collection;
 
@@ -56,7 +56,7 @@ class ResourceRepository
     /**
      * Return collection of resource instances
      *
-     * @return Illuminate\Support\Collection
+     * @return EthicalJobs\SDK\Collection
      */
     public static function all()
     {

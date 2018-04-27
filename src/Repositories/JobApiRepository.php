@@ -2,6 +2,7 @@
 
 namespace EthicalJobs\SDK\Repositories;
 
+use Traversable;
 use EthicalJobs\SDK\ApiClient;
 use EthicalJobs\SDK\Collection;
 use EthicalJobs\Foundation\Storage\Repository;
@@ -85,11 +86,7 @@ class JobApiRepository implements Repository
      */
     public function findByField(string $field, $value)
     {
-        $response = $this->api->get("/jobs?$field=$value&limit=1");
-
-        $jobs = $response->select()->entities('jobs');
-
-        return $jobs->first();
+        return $this->api->get("/jobs?$field=$value&limit=1");
     }        
 
     /**
@@ -173,7 +170,7 @@ class JobApiRepository implements Repository
      */
     protected function fetch(): Collection
     {
-        $response = $this->api->get('/search/jobs', $this->query)
+        $response = $this->api->get('/search/jobs', $this->query);
 
         return $response;
     }      

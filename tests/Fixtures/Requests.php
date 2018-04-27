@@ -2,7 +2,7 @@
 
 namespace EthicalJobs\Tests\SDK\Fixtures;
 
-use Illuminate\Support\Collection;
+use EthicalJobs\SDK\Collection;
 
 class Requests
 {
@@ -10,7 +10,7 @@ class Requests
 	 * Authentication response
 	 *
 	 * @param Integer $numberOfJobs
-	 * @return Illuminate\Support\Collection
+	 * @return EthicalJobs\SDK\Collection
 	 */
 	public static function jobsCollection($numberOfJobs)
 	{
