@@ -2,7 +2,7 @@
 
 namespace EthicalJobs\SDK\Resources;
 
-use EthicalJobs\SDK\HttpClient;
+use EthicalJobs\SDK\ApiClient;
 use EthicalJobs\SDK\Router;
 
 /**
@@ -14,21 +14,21 @@ use EthicalJobs\SDK\Router;
 abstract class ApiResource
 {
 	/**
-	 * Http client
+	 * Api client
 	 *
-	 * @var \EthicalJobs\SDK\HttpClient
+	 * @var \EthicalJobs\SDK\ApiClient
 	 */
-	protected $http;
+	protected $api;
 
 	/**
 	 * Object constructor
 	 *
-	 * @param \EthicalJobs\SDK\HttpClient
+	 * @param \EthicalJobs\SDK\ApiClient
 	 * @return Void
 	 */
-	public function __construct(HttpClient $http)
+	public function __construct(ApiClient $api)
 	{
-		$this->http = $http;
+		$this->api = $api;
 	}	
 
    	/**

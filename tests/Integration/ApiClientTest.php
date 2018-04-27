@@ -27,6 +27,7 @@ class ApiClientTest extends TestCase
         $this->assertInstanceOf(Resources\OrganisationsResource::class, $client->organisations);
         $this->assertInstanceOf(Resources\SearchResource::class, $client->search);
         $this->assertInstanceOf(Resources\UsersResource::class, $client->users);
+        $this->assertInstanceOf(Resources\TaxonomyResource::class, $client->taxonomies);
     }
 
     /**

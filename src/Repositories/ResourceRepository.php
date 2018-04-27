@@ -4,7 +4,7 @@ namespace EthicalJobs\SDK\Repositories;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
-use EthicalJobs\SDK\HttpClient;
+use EthicalJobs\SDK\ApiClient;
 use EthicalJobs\SDK\Resources;
 
 /**
@@ -36,6 +36,7 @@ class ResourceRepository
             Resources\OrganisationsResource::getName()  => Resources\OrganisationsResource::class,
             Resources\SearchResource::getName()         => Resources\SearchResource::class,
             Resources\UsersResource::getName()          => Resources\UsersResource::class,
+            Resources\TaxonomyResource::getName()       => Resources\TaxonomyResource::class,
         ]);
     }
 
@@ -72,7 +73,7 @@ class ResourceRepository
      */
     protected static function make($resouceClass)
     {
-        $http = App::make(HttpClient::class);
+        $http = App::make(ApiClient::class);
 
         return new $resouceClass($http);
     }    

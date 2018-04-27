@@ -29,7 +29,7 @@ class JobsResource extends ApiResource
 	 */		
 	public function approved($params = [])
 	{
-		return $this->http->get('/jobs', array_merge([
+		return $this->api->get('/jobs', array_merge([
 			'status'	=> Enumerables\JobStatus::APPROVED(),
 			'expired'	=> 0,
 		], $params));
@@ -69,7 +69,7 @@ class JobsResource extends ApiResource
 
 		foreach ($jobs->chunk(50) as $chunk) {
 
-			$response = $this->http->$verb('/jobs/collection', ['jobs' => $chunk]);
+			$response = $this->api->$verb('/jobs/collection', ['jobs' => $chunk]);
 
 			$responses = array_merge_recursive($responses, $response->toArray());
 		}

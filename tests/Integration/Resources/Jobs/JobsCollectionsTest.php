@@ -3,11 +3,13 @@
 namespace EthicalJobs\Tests\SDK\Resources\Jobs;
 
 use Mockery;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Collection;
 use EthicalJobs\Tests\SDK\Fixtures;
 use EthicalJobs\SDK\Resources\JobsResource;
 use EthicalJobs\Tests\SDK\TestCase;
 use EthicalJobs\SDK\HttpClient;
+use EthicalJobs\SDK\ApiClient;
 
 
 class JobsCollectionsTest extends TestCase
@@ -39,7 +41,11 @@ class JobsCollectionsTest extends TestCase
             ->andReturn($responses[0],$responses[1],$responses[2],$responses[3])
             ->getMock();
 
-        $results = (new JobsResource($http))
+        App::instance(HttpClient::class, $http);
+
+        $api = App::make(ApiClient::class);
+
+        $results = (new JobsResource($api))
             ->patchCollection($jobs);
 
         $this->assertInstanceOf(Collection::class, $results);
@@ -79,7 +85,11 @@ class JobsCollectionsTest extends TestCase
             ->andReturn($responses[0],$responses[1],$responses[2],$responses[3])
             ->getMock();
 
-        $results = (new JobsResource($http))
+        App::instance(HttpClient::class, $http);
+
+        $api = App::make(ApiClient::class);
+
+        $results = (new JobsResource($api))
             ->putCollection($jobs);
 
         $this->assertInstanceOf(Collection::class, $results);
