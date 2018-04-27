@@ -2,15 +2,15 @@
 
 namespace EthicalJobs\SDK;
 
-use Illuminate\Support\Collection;
+use EthicalJobs\Foundation\Http\ParameterQuery
 
 /**
- * Response selector
+ * Job parameter query
  *
  * @author Andrew McLagan <andrew@ethicaljobs.com.au>
  */
 
-class ResponseSelector 
+class JobParameterQuery implements ParameterQuery
 {
 	/**
 	 * Response array
@@ -115,4 +115,11 @@ class ResponseSelector
 	{
 		return array_get($this->response, "data.entities.$entities", []);
 	}		
+
+	/**
+	 * 
+	 */
+	public function entitiesByDateFrom	
+
+	public function entitiesByDateFrom
 }
