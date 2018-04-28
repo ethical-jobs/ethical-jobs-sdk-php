@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Integration\Storage\QueryAdapters\Database;
+namespace EthicalJobs\Tests\SDK\Repositories\TaxonomyApiRepository;
 
 use Mockery;
-use EthicalJobs\SDK\Collection;
 use EthicalJobs\SDK\Repositories\TaxonomyApiRepository;
 use EthicalJobs\SDK\ApiClient;
+use EthicalJobs\Tests\SDK\Fixtures;
 
 class FindTest extends \EthicalJobs\Tests\SDK\TestCase
 {
@@ -15,19 +15,20 @@ class FindTest extends \EthicalJobs\Tests\SDK\TestCase
      */
     public function it_can_execute_the_query()
     {
-        $expected = new Collection(['entities' => 'jobs']);
-        
         $api = Mockery::mock(ApiClient::class)
-            ->shouldReceive('get')
-            ->with('/search/jobs', [])
-            ->andReturn($expected)
+            ->shouldReceive('appData')
+            ->withNoArgs()
+            ->andReturn(Fixtures\Taxonomies::queryResponse())
             ->getMock();
 
         $repository = new TaxonomyApiRepository($api);
 
-        $response = $repository
+        $terms = $repository
+            ->taxonomy('categories')
             ->find();
 
-        $this->assertEquals($response, $expected);
+        $expected = array_get(Fixtures\Taxonomies::queryResponse(), 'data.taxonomies.categories');
+
+        $this->assertEquals($terms->toArray(), $expected);
     }     
 }

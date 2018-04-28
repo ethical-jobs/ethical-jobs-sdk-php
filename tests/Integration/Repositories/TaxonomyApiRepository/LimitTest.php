@@ -1,11 +1,12 @@
 <?php
 
-namespace Tests\Integration\Storage\QueryAdapters\Database;
+namespace EthicalJobs\Tests\SDK\Repositories\TaxonomyApiRepository;
 
 use Mockery;
-use EthicalJobs\SDK\Collection;
 use EthicalJobs\SDK\Repositories\TaxonomyApiRepository;
 use EthicalJobs\SDK\ApiClient;
+use EthicalJobs\SDK\Collection;
+use EthicalJobs\Tests\SDK\Fixtures;
 
 class LimitTest extends \EthicalJobs\Tests\SDK\TestCase
 {
@@ -32,19 +33,17 @@ class LimitTest extends \EthicalJobs\Tests\SDK\TestCase
      */
     public function it_can_add_a_limit_query()
     {
-        $expected = new Collection(['entities' => 'jobs']);
-        
         $api = Mockery::mock(ApiClient::class)
-            ->shouldReceive('get')
-            ->once()
-            ->with('/search/jobs', [
-                'limit' => 15,
-            ])
-            ->andReturn($expected)
+            ->shouldReceive('appData')
+            ->withNoArgs()
+            ->andReturn(Fixtures\Taxonomies::queryResponse())
             ->getMock();
 
-        (new TaxonomyApiRepository($api))
+        $terms = (new TaxonomyApiRepository($api))
+            ->taxonomy('categories')
             ->limit(15)
             ->find();
+
+        $this->assertEquals(15, $terms->count());
     }    
 }

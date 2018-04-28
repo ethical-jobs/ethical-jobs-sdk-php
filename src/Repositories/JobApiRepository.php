@@ -4,6 +4,7 @@ namespace EthicalJobs\SDK\Repositories;
 
 use Traversable;
 use EthicalJobs\SDK\ApiClient;
+use EthicalJobs\SDK\Collection;
 use EthicalJobs\Foundation\Storage\Repository;
 
 /**
@@ -155,6 +156,8 @@ class JobApiRepository implements Repository
         $responses = [];
 
         foreach ($jobs->chunk(50) as $chunk) {
+
+            $verb = strtolower($verb);
 
             $response = $this->api->$verb('/jobs/collection', ['jobs' => $chunk]);
 

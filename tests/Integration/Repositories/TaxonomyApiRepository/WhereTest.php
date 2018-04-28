@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Integration\Storage\QueryAdapters\Database;
+namespace EthicalJobs\Tests\SDK\Repositories\TaxonomyApiRepository;
 
 use Mockery;
-use EthicalJobs\SDK\Collection;
 use EthicalJobs\SDK\Repositories\TaxonomyApiRepository;
 use EthicalJobs\SDK\ApiClient;
+use EthicalJobs\Tests\SDK\Fixtures;
 
 class WhereTest extends \EthicalJobs\Tests\SDK\TestCase
 {
@@ -30,43 +30,131 @@ class WhereTest extends \EthicalJobs\Tests\SDK\TestCase
      * @test
      * @group Unit
      */
-    public function it_can_add_a_where_query()
+    public function it_can_add_an_eq_where_query()
     {
-        $expected = new Collection(['entities' => 'jobs']);
-
         $api = Mockery::mock(ApiClient::class)
-            ->shouldReceive('get')
-            ->once()
-            ->with('/search/jobs', [
-                'status' => 'APPROVED',
-            ])
-            ->andReturn($expected)
+            ->shouldReceive('appData')
+            ->withNoArgs()
+            ->andReturn(Fixtures\Taxonomies::queryResponse())
             ->getMock();
 
-        (new TaxonomyApiRepository($api))
-            ->where('status', '=', 'APPROVED')
+        $terms = (new TaxonomyApiRepository($api))
+            ->taxonomy('categories')
+            ->where('job_count', '=', 50)
             ->find();
+
+        $terms->pluck('job_count')->each(function($jobCount) {
+            $this->assertTrue($jobCount == 50);
+        });
     } 
 
     /**
      * @test
      * @group Unit
      */
-    public function its_where_clause_always_uses_the_equals_operator()
+    public function it_can_add_an_neq_where_query()
     {
-        $expected = new Collection(['entities' => 'jobs']);
-        
         $api = Mockery::mock(ApiClient::class)
-            ->shouldReceive('get')
-            ->once()
-            ->with('/search/jobs', [
-                'status' => 'APPROVED',
-            ])
-            ->andReturn($expected)
+            ->shouldReceive('appData')
+            ->withNoArgs()
+            ->andReturn(Fixtures\Taxonomies::queryResponse())
             ->getMock();
 
-        (new TaxonomyApiRepository($api))
-            ->where('status', '>=', 'APPROVED')
+        $terms = (new TaxonomyApiRepository($api))
+            ->taxonomy('categories')
+            ->where('job_count', '!=', 50)
             ->find();
+
+        $terms->pluck('job_count')->each(function($jobCount) {
+            $this->assertTrue($jobCount != 50);
+        });
+    }     
+
+    /**
+     * @test
+     * @group Unit
+     */
+    public function it_can_add_an_lte_where_query()
+    {
+        $api = Mockery::mock(ApiClient::class)
+            ->shouldReceive('appData')
+            ->withNoArgs()
+            ->andReturn(Fixtures\Taxonomies::queryResponse())
+            ->getMock();
+
+        $terms = (new TaxonomyApiRepository($api))
+            ->taxonomy('categories')
+            ->where('job_count', '<=', 50)
+            ->find();
+
+        $terms->pluck('job_count')->each(function($jobCount) {
+            $this->assertTrue($jobCount <= 50);
+        });
     }         
+
+    /**
+     * @test
+     * @group Unit
+     */
+    public function it_can_add_an_gte_where_query()
+    {
+        $api = Mockery::mock(ApiClient::class)
+            ->shouldReceive('appData')
+            ->withNoArgs()
+            ->andReturn(Fixtures\Taxonomies::queryResponse())
+            ->getMock();
+
+        $terms = (new TaxonomyApiRepository($api))
+            ->taxonomy('categories')
+            ->where('job_count', '>=', 50)
+            ->find();
+
+        $terms->pluck('job_count')->each(function($jobCount) {
+            $this->assertTrue($jobCount >= 50);
+        });
+    }   
+
+    /**
+     * @test
+     * @group Unit
+     */
+    public function it_can_add_an_gt_where_query()
+    {
+        $api = Mockery::mock(ApiClient::class)
+            ->shouldReceive('appData')
+            ->withNoArgs()
+            ->andReturn(Fixtures\Taxonomies::queryResponse())
+            ->getMock();
+
+        $terms = (new TaxonomyApiRepository($api))
+            ->taxonomy('categories')
+            ->where('job_count', '>', 50)
+            ->find();
+
+        $terms->pluck('job_count')->each(function($jobCount) {
+            $this->assertTrue($jobCount > 50);
+        });
+    }   
+
+    /**
+     * @test
+     * @group Unit
+     */
+    public function it_can_add_an_lt_where_query()
+    {
+        $api = Mockery::mock(ApiClient::class)
+            ->shouldReceive('appData')
+            ->withNoArgs()
+            ->andReturn(Fixtures\Taxonomies::queryResponse())
+            ->getMock();
+
+        $terms = (new TaxonomyApiRepository($api))
+            ->taxonomy('categories')
+            ->where('job_count', '<', 50)
+            ->find();
+
+        $terms->pluck('job_count')->each(function($jobCount) {
+            $this->assertTrue($jobCount < 50);
+        });
+    }                                
 }

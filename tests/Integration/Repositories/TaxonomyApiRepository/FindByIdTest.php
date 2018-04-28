@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Integration\Storage\QueryAdapters\Database;
+namespace EthicalJobs\Tests\SDK\Repositories\TaxonomyApiRepository;
 
 use Mockery;
-use EthicalJobs\SDK\Collection;
 use EthicalJobs\SDK\Repositories\TaxonomyApiRepository;
 use EthicalJobs\SDK\ApiClient;
+use EthicalJobs\Tests\SDK\Fixtures;
 
 class FindByIdTest extends \EthicalJobs\Tests\SDK\TestCase
 {
@@ -15,18 +15,23 @@ class FindByIdTest extends \EthicalJobs\Tests\SDK\TestCase
      */
     public function it_can_find_by_id()
     {
-        $expected = new Collection(['entities' => 'jobs']);
-        
         $api = Mockery::mock(ApiClient::class)
-            ->shouldReceive('get')
-            ->with("/jobs/1337")
-            ->andReturn($expected)
+            ->shouldReceive('appData')
+            ->withNoArgs()
+            ->andReturn(Fixtures\Taxonomies::queryResponse())
             ->getMock();
 
         $repository = new TaxonomyApiRepository($api);
 
-        $response = $repository->findById(1337);
+        $term = $repository
+            ->taxonomy('categories')
+            ->findById(7);
 
-        $this->assertEquals($response, $expected);
+        $this->assertEquals($term, [
+            'id'        => 7,
+            'slug'      => 'careandsupportservices',
+            'title'     => 'Care and Support Work',
+            'job_count' => 79,
+        ]);
     }        
 }

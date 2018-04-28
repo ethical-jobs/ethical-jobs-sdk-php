@@ -2,7 +2,7 @@
 
 namespace EthicalJobs\SDK;
 
-use Illuminate\Support\Collection;
+use EthicalJobs\SDK\Collection;
 
 /**
  * Response selector - selects items from response collection
@@ -15,7 +15,7 @@ class ResponseSelector
 	/**
 	 * Response array
 	 *
-	 * @var Illuminate\Support\Collection
+	 * @var EthicalJobs\SDK\Collection
 	 */
 	protected $response = [];
 
@@ -25,7 +25,7 @@ class ResponseSelector
 	 * @param iterable $response
 	 * @return void
 	 */
-	private function __construct(iterable $response)
+	public function __construct(iterable $response)
 	{
 		$this->setResponse($response);
 	}	
@@ -50,7 +50,7 @@ class ResponseSelector
 	public function setResponse(iterable $response): ResponseSelector
 	{
 		if (! $response instanceof Collection) {
-			$response = collect($response);
+			$response = new Collection($response);
 		}
 
 		$this->response = $response;
@@ -61,7 +61,7 @@ class ResponseSelector
 	/**
 	 * Gets the current response
 	 *
-	 * @return Illuminate\Support\Collection
+	 * @return EthicalJobs\SDK\Collection
 	 */
 	public function getResponse(): Collection
 	{

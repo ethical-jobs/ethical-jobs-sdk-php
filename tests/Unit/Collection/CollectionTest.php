@@ -42,7 +42,7 @@ class CollectionTest extends \EthicalJobs\Tests\SDK\TestCase
             ],
         ]);
 
-        $user = $response->select()->byId('users', 276);
+        $user = $response->select()->entityById('users', 276);
 
         $this->assertEquals($user, ['id' => 276, 'name' => 'Andrew']);
     }       

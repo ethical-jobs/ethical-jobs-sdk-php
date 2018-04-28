@@ -80,7 +80,17 @@ class TaxonomyApiRepository implements Repository
      */
     public function where(string $field, $operator, $value = null): Repository
     {
-        $this->taxonomies = $this->taxonomies->where($field, $value);
+        $this->taxonomies = $this->taxonomies->filter(function($item) use($field, $operator, $value) {
+            switch ($operator) {
+                case '>':   return $item[$field] > $value;
+                case '<':   return $item[$field] < $value;
+                case '>=':  return $item[$field] >= $value;
+                case '<=':  return $item[$field] <= $value;
+                case '!=':  return $item[$field] != $value;
+                default:
+                case '=':   return $item[$field] == $value;
+            }
+        });        
 
         return $this;
     }    
@@ -133,7 +143,9 @@ class TaxonomyApiRepository implements Repository
      */
     public function taxonomy(string $taxonomy): Repository
     {
-        $this->taxonomies = $this->taxonomies->get($taxonomy);
+        $taxonomyArr = $this->taxonomies->get($taxonomy);
+
+        $this->taxonomies = new Collection($taxonomyArr);
 
         return $this;
     }      

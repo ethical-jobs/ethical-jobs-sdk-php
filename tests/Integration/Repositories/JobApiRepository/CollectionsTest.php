@@ -1,6 +1,6 @@
 <?php
 
-namespace EthicalJobs\Tests\SDK\Resources\Jobs;
+namespace EthicalJobs\Tests\SDK\Repositories\JobApiRepository;
 
 use Mockery;
 use EthicalJobs\SDK\Collection;
@@ -8,7 +8,7 @@ use EthicalJobs\SDK\Repositories\JobApiRepository;
 use EthicalJobs\SDK\ApiClient;
 use EthicalJobs\Tests\SDK\Fixtures;
 
-class CollectionsTest extends TestCase
+class CollectionsTest extends \EthicalJobs\Tests\SDK\TestCase
 {
     /**
      * @test
@@ -39,9 +39,10 @@ class CollectionsTest extends TestCase
 
         $repository = new JobApiRepository($api);
 
-        $repository->patchCollection($jobs);
+        $results = $repository->patchCollection($jobs);
 
         $this->assertInstanceOf(Collection::class, $results);
+        
         $this->assertEquals($results->toArray(), [
             'data' => [
                 'entities' => [
@@ -80,9 +81,10 @@ class CollectionsTest extends TestCase
 
         $repository = new JobApiRepository($api);
 
-        $repository->putCollection($jobs);
+        $results = $repository->putCollection($jobs);
 
         $this->assertInstanceOf(Collection::class, $results);
+
         $this->assertEquals($results->toArray(), [
             'data' => [
                 'entities' => [

@@ -72,10 +72,10 @@ class ApiClient
 	/**
 	 * Dynamic api resource properties
 	 * 
-	 * @param  String $resourceName
-	 * @return EthicalJobs\SDK\Resources\ApiResource
+	 * @param string $resourceName
+	 * @return EthicalJobs\Foundation\Storage\Repository
 	 */
-   	public function __get($resourceName)
+   	public function __get(string $resourceName)
    	{
    		return $this->resource($resourceName);
    	}	

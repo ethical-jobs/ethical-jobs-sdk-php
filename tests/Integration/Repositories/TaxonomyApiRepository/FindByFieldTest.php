@@ -5,7 +5,7 @@ namespace EthicalJobs\Tests\SDK\Repositories\TaxonomyApiRepository;
 use Mockery;
 use EthicalJobs\SDK\Repositories\TaxonomyApiRepository;
 use EthicalJobs\SDK\ApiClient;
-use EthicalJobs\Tests\SDK\Fixtures\Taxonomies;
+use EthicalJobs\Tests\SDK\Fixtures;
 
 class FindByFieldTest extends \EthicalJobs\Tests\SDK\TestCase
 {
@@ -15,8 +15,6 @@ class FindByFieldTest extends \EthicalJobs\Tests\SDK\TestCase
      */
     public function it_can_find_by_a_field()
     {
-        $expected = new Collection(['entities' => 'jobs']);
-
         $api = Mockery::mock(ApiClient::class)
             ->shouldReceive('appData')
             ->withNoArgs()
