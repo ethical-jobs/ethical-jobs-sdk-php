@@ -1,6 +1,6 @@
 <?php
 
-namespace EthicalJobs\SDK\Repositories\Api;
+namespace EthicalJobs\SDK\Repositories;
 
 use Traversable;
 use EthicalJobs\SDK\ApiClient;
@@ -13,35 +13,28 @@ use EthicalJobs\Foundation\Storage\Repository;
  * @author Andrew McLagan <andrew@ethicaljobs.com.au>
  */
 
-class JobApiRepository implements Repository
+class TaxonomyApiRepository implements Repository
 {
     /**
-     * Api client instance
+     * Api client
      *
      * @var EthicalJobs\SDK\ApiClient
      */
-    protected $api;
+    protected $api;   
 
     /**
-     * Cache lifespan in minutes
+     * Taxonomies collection
      *
-     * @var int
+     * @var EthicalJobs\SDK\Collection
      */
-    protected $cacheTTL = 5; 
+    protected $taxonomies;
 
     /**
-     * Cache key namespace
+     * Current working taxonomy
      *
      * @var string
      */
-    protected $cacheKey = 'ej:api:cache:jobs:';     
-
-    /**
-     * Http query vars
-     *
-     * @var array
-     */
-    protected $query = [];     
+    protected $taxonomy = '';    
 
     /**
      * Object constructor
@@ -50,15 +43,15 @@ class JobApiRepository implements Repository
      */
     public function __construct(ApiClient $api)
     {
-        $this->response = new Collection;
+        $this->setStorageEngine($api); 
 
-        $this->setQuery($api); 
+        $this->fetchTaxonomies();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getQuery()
+    public function getStorageEngine()
     {
         return $this->api;
     }
@@ -66,9 +59,9 @@ class JobApiRepository implements Repository
     /**
      * {@inheritdoc}
      */
-    public function setQuery($query)
+    public function setStorageEngine($storage)
     {
-        $this->api = $query;
+        $this->api = $storage;
 
         return $this;
     }    
@@ -78,7 +71,9 @@ class JobApiRepository implements Repository
      */
     public function findById($id)
     {
-        return $this->api->get("/jobs/$id");
+        $response = $this->api->appData();
+
+        return ResponseSelector::select($response)->taxonomyTermById($taxonomy, $id);
     }     
 
     /**
@@ -134,32 +129,51 @@ class JobApiRepository implements Repository
     /**
      * {@inheritdoc}
      */
-    public function asModels(): Repository
+    public function find(): Traversable
     {
-        // N/A for API repositories
-    }    
+        return $this->api->get('/search/jobs', $this->query);
+    }  
+
+    /**
+     * Set the working taxonomy
+     *
+     * @param string $taxonomy
+     * @return $this
+     */
+    public function taxonomy(string $taxonomy): Repository
+    {
+        $this->taxonomy = $taxonomy;
+
+        return $this;
+    }      
+
+    /**
+     * Patch a collection of jobs
+     *
+     * @param EthicalJobs\SDK\Collection $jobs
+     * @return EthicalJobs\SDK\Collection
+     */     
+    protected function fetchTaxonomies()
+    {
+        $response = $this->api->appData();
+
+        $taxonomies = array_get($response, 'data.taxonomies', []);
+
+        $this->taxonomies = new Collection($taxonomies);
+    }       
 
     /**
      * {@inheritdoc}
      */
-    public function asObjects(): Repository  
-    {
-        // To do...
-    }    
+    public function asModels(): Repository { }    
+
+    /**
+     * {@inheritdoc}
+     */
+    public function asObjects(): Repository { }    
     
     /**
      * {@inheritdoc}
      */
-    public function asArrays(): Repository    
-    {
-        // default behaviour
-    }                    
-
-    /**
-     * {@inheritdoc}
-     */
-    public function find(): Traversable
-    {
-        return $this->api->get('/search/jobs', $this->query);
-    }    
+    public function asArrays(): Repository { }            
 }
