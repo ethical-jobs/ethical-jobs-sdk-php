@@ -3,13 +3,11 @@
 namespace Tests\Integration\Storage\QueryAdapters\Database;
 
 use Mockery;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Builder;
-use EthicalJobs\Foundation\Storage\Repositories\DatabaseRepository;
-use Tests\Fixtures\RepositoryFactory;
-use Tests\Fixtures\Person;
+use EthicalJobs\SDK\Collection;
+use EthicalJobs\SDK\Repositories\JobApiRepository;
+use EthicalJobs\SDK\ApiClient;
 
-class LimitTest extends \Tests\TestCase
+class LimitTest extends \EthicalJobs\Tests\SDK\TestCase
 {
     /**
      * @test
@@ -17,29 +15,36 @@ class LimitTest extends \Tests\TestCase
      */
     public function it_has_fluent_interface()
     {
-        $query = Mockery::mock(Builder::class)->shouldIgnoreMissing();
+        $api = Mockery::mock(ApiClient::class)
+            ->shouldIgnoreMissing();
 
-        $isFluent = (RepositoryFactory::build(new Person))
-            ->setQuery($query)
+        $repository = new JobApiRepository($api);
+
+        $isFluent = $repository
             ->limit(15);
 
-        $this->assertInstanceOf(DatabaseRepository::class, $isFluent);
+        $this->assertInstanceOf(JobApiRepository::class, $isFluent);
     }   
 
     /**
      * @test
      * @group Unit
      */
-    public function it_can_add_a_where_query()
+    public function it_can_add_a_limit_query()
     {
-        $query = Mockery::mock(Builder::class)
-             ->shouldReceive('limit')
-             ->once()
-             ->with(15)
-             ->getMock();
+        $expected = new Collection(['entities' => 'jobs']);
+        
+        $api = Mockery::mock(ApiClient::class)
+            ->shouldReceive('get')
+            ->once()
+            ->with('/search/jobs', [
+                'limit' => 15,
+            ])
+            ->andReturn($expected)
+            ->getMock();
 
-        $result = (RepositoryFactory::build(new Person))
-            ->setQuery($query)
-            ->limit(15);
+        (new JobApiRepository($api))
+            ->limit(15)
+            ->find();
     }    
 }

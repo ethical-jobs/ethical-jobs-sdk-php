@@ -1,6 +1,6 @@
 <?php
 
-namespace EthicalJobs\SDK\Repositories;
+namespace EthicalJobs\SDK\Repositories\Api;
 
 use Traversable;
 use EthicalJobs\SDK\ApiClient;
@@ -160,70 +160,6 @@ class JobApiRepository implements Repository
      */
     public function find(): Traversable
     {
-        $this->response = $this->fetchFromCache();
-    }   
-
-    /**
-     * Fetch jobs from api
-     *
-     * @return 
-     */
-    protected function fetch(): Collection
-    {
-        $response = $this->api->get('/search/jobs', $this->query);
-
-        return $response;
-    }      
-
-    /**
-     * Fetch jobs from cache
-     *
-     * @return 
-     */
-    protected function fetchFromCache(): Collection
-    {
-        $queryKey = $this->getQueryKey();
-
-        if ($this->checkQueryKey($queryKey)) {
-            return Cache::get($queryKey);
-        }
-
-        $jobs = $this->fetch();
-
-        Cache::put($queryCacheKey, $jobs, $this->cacheTTL);
-
-        return $jobs;
-    } 
-
-    /**
-     * Generates a cache key for the query
-     *
-     * @return $this
-     */
-    protected function getQueryKey(): string
-    {          
-        $paramsAsJson = json_encode($this->query);
-
-        return $this->cacheKey.Hash::make($paramsAsJson);
-    }
-
-    /**
-     * Validates a cache key for the query
-     *
-     * @param string $queryKey
-     * @return bool
-     */
-    protected function checkQueryKey(string $queryKey): bool
-    {          
-        if (Cache::has($queryKey)) {
-
-            $paramsAsJson = json_encode($this->query);
-
-            $hash = str_after($queryKey, $this->cacheKey);
-
-            return Hash::check($paramsAsJson, $hash);
-        }
-
-        return false;
+        return $this->api->get('/search/jobs', $this->query);
     }    
 }

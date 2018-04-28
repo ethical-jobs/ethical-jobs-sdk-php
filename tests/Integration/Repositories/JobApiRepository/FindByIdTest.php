@@ -3,68 +3,30 @@
 namespace Tests\Integration\Storage\QueryAdapters\Database;
 
 use Mockery;
-use Illuminate\Database\Eloquent\Builder;
-use Tests\Fixtures\RepositoryFactory;
-use Tests\Fixtures\Person;
+use EthicalJobs\SDK\Collection;
+use EthicalJobs\SDK\Repositories\JobApiRepository;
+use EthicalJobs\SDK\ApiClient;
 
-class FindByIdTest extends \Tests\TestCase
+class FindByIdTest extends \EthicalJobs\Tests\SDK\TestCase
 {
-    /**
-     * @test
-     * @group Unit
-     */
-    public function it_returns_a_model_if_one_is_passed_in()
-    {
-        $repository = RepositoryFactory::build(new Person);
-
-        $id = new Person;
-
-        $result = $repository->findById($id);
-
-        $this->assertEquals($id, $result);
-    }  
-
     /**
      * @test
      * @group Unit
      */
     public function it_can_find_by_id()
     {
-        $expected = new Person;
+        $expected = new Collection(['entities' => 'jobs']);
+        
+        $api = Mockery::mock(ApiClient::class)
+            ->shouldReceive('get')
+            ->with("/jobs/1337")
+            ->andReturn($expected)
+            ->getMock();
 
-        $query = Mockery::mock(Builder::class)
-             ->shouldReceive('find')
-             ->once()
-             ->with(1337)
-             ->andReturn($expected)
-             ->getMock();
+        $repository = new JobApiRepository($api);
 
-        $result = (RepositoryFactory::build(new Person))
-            ->setQuery($query)
-            ->findById(1337);
+        $response = $repository->findById(1337);
 
-        $this->assertEquals($expected, $result);
-    }    
-
-    /**
-     * @test
-     * @group Unit
-     */
-    public function it_throws_http_404_exception_when_no_model_found()
-    {
-        $this->expectException(\Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class);
-
-        $expected = new Person;
-
-        $query = Mockery::mock(Builder::class)
-             ->shouldReceive('find')
-             ->once()
-             ->with(1337)
-             ->andReturn(null)
-             ->getMock();
-
-        (RepositoryFactory::build(new Person))
-            ->setQuery($query)
-            ->findById(1337);
-    }         
+        $this->assertEquals($response, $expected);
+    }        
 }

@@ -3,13 +3,11 @@
 namespace Tests\Integration\Storage\QueryAdapters\Database;
 
 use Mockery;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Builder;
-use EthicalJobs\Foundation\Storage\Repositories\DatabaseRepository;
-use Tests\Fixtures\RepositoryFactory;
-use Tests\Fixtures\Person;
+use EthicalJobs\SDK\Collection;
+use EthicalJobs\SDK\Repositories\JobApiRepository;
+use EthicalJobs\SDK\ApiClient;
 
-class OrderByTest extends \Tests\TestCase
+class OrderByTest extends \EthicalJobs\Tests\SDK\TestCase
 {
     /**
      * @test
@@ -17,29 +15,37 @@ class OrderByTest extends \Tests\TestCase
      */
     public function it_has_fluent_interface()
     {
-        $query = Mockery::mock(Builder::class)->shouldIgnoreMissing();
+        $api = Mockery::mock(ApiClient::class)
+            ->shouldIgnoreMissing();
 
-        $isFluent = (RepositoryFactory::build(new Person))
-            ->setQuery($query)
-            ->orderBy('status', 'asc');
+        $repository = new JobApiRepository($api);
 
-        $this->assertInstanceOf(DatabaseRepository::class, $isFluent);
+        $isFluent = $repository
+            ->orderBy('approved_at', 'DESC');
+
+        $this->assertInstanceOf(JobApiRepository::class, $isFluent);
     }   
 
     /**
      * @test
      * @group Unit
      */
-    public function it_can_add_a_where_query()
+    public function it_can_add_a_orderBy_query()
     {
-        $query = Mockery::mock(Builder::class)
-             ->shouldReceive('orderBy')
-             ->once()
-             ->with('status', 'asc')
-             ->getMock();
+        $expected = new Collection(['entities' => 'jobs']);
+        
+        $api = Mockery::mock(ApiClient::class)
+            ->shouldReceive('get')
+            ->once()
+            ->with('/search/jobs', [
+                'orderBy'   => 'approved_at',
+                'order'     => 'DESC',
+            ])
+            ->andReturn($expected)
+            ->getMock();
 
-        $result = (RepositoryFactory::build(new Person))
-            ->setQuery($query)
-            ->orderBy('status', 'asc');
+        (new JobApiRepository($api))
+            ->orderBy('approved_at', 'DESC')
+            ->find();
     }    
 }

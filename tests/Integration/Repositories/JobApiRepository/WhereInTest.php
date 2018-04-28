@@ -3,13 +3,11 @@
 namespace Tests\Integration\Storage\QueryAdapters\Database;
 
 use Mockery;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Builder;
-use EthicalJobs\Foundation\Storage\Repositories\DatabaseRepository;
-use Tests\Fixtures\RepositoryFactory;
-use Tests\Fixtures\Person;
+use EthicalJobs\SDK\Collection;
+use EthicalJobs\SDK\Repositories\JobApiRepository;
+use EthicalJobs\SDK\ApiClient;
 
-class WhereInTest extends \Tests\TestCase
+class WhereInTest extends \EthicalJobs\Tests\SDK\TestCase
 {
     /**
      * @test
@@ -17,29 +15,36 @@ class WhereInTest extends \Tests\TestCase
      */
     public function it_has_fluent_interface()
     {
-        $query = Mockery::mock(Builder::class)->shouldIgnoreMissing();
+        $api = Mockery::mock(ApiClient::class)
+            ->shouldIgnoreMissing();
 
-        $isFluent = (RepositoryFactory::build(new Person))
-            ->setQuery($query)
-            ->whereIn('status', ['APPROVED','DRAFT']);
+        $repository = new JobApiRepository($api);
 
-        $this->assertInstanceOf(DatabaseRepository::class, $isFluent);
+        $isFluent = $repository
+            ->whereIn('locations', [1,28,298,23,7]);
+
+        $this->assertInstanceOf(JobApiRepository::class, $isFluent);
     }   
 
     /**
      * @test
      * @group Unit
      */
-    public function it_can_add_a_where_query()
+    public function it_can_add_a_whereIn_query()
     {
-        $query = Mockery::mock(Builder::class)
-             ->shouldReceive('whereIn')
-             ->once()
-             ->with('status', ['APPROVED','DRAFT'])
-             ->getMock();
+        $expected = new Collection(['entities' => 'jobs']);
+        
+        $api = Mockery::mock(ApiClient::class)
+            ->shouldReceive('get')
+            ->once()
+            ->with('/search/jobs', [
+                'status' => ['APPROVED','DRAFT'],
+            ])
+            ->andReturn($expected)
+            ->getMock();
 
-        $result = (RepositoryFactory::build(new Person))
-            ->setQuery($query)
-            ->whereIn('status', ['APPROVED','DRAFT']);
+        (new JobApiRepository($api))
+            ->whereIn('status', ['APPROVED','DRAFT'])
+            ->find();
     }    
 }
