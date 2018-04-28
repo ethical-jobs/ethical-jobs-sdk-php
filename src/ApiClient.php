@@ -4,7 +4,7 @@ namespace EthicalJobs\SDK;
 
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Cache;
-use EthicalJobs\SDK\Repositories\ResourceRepository;
+use EthicalJobs\Foundation\Storage\Repository;
 use EthicalJobs\SDK\Router;
 
 /**
@@ -23,6 +23,14 @@ class ApiClient
 	protected $http;
 
 	/**
+	 * Resource collection
+	 *
+	 * @var \EthicalJobs\SDK\ResourceCollection
+	 */
+	protected $resources;
+
+
+	/**
 	 * Object constructor
 	 *
 	 * @return  Void
@@ -30,21 +38,23 @@ class ApiClient
 	public function __construct(HttpClient $http)
 	{
 		$this->http = $http;
+
+		$this->resources = new ResourceCollection;
 	}
 
 	/**
-	 * Resource accessor
+	 * Resource repository accessor
 	 * 
-	 * @param  String $resourceName
-	 * @return EthicalJobs\SDK\Resources\ApiResource
+	 * @param string $resourceName
+	 * @return EthicalJobs\Foundation\Storage\Repository
 	 */
-   	public function resource($resourceName)
+   	public function resource(string $resourceName): Repository
    	{	
-   		if ($resource = ResourceRepository::find($resourceName)) {
-   			return $resource;
+   		if ($resource = $this->resources->get($resourceName)) {
+   			return ResourceCollection::makeResourceRepository($resource);
    		}
 
-   		throw new \Exception("Invalid api resource '{$resourceName}'");
+   		throw new \Exception("Invalid api resource repository '{$resourceName}'");
    	}
 
 	/**

@@ -27,14 +27,7 @@ class TaxonomyApiRepository implements Repository
      *
      * @var EthicalJobs\SDK\Collection
      */
-    protected $taxonomies;
-
-    /**
-     * Current working taxonomy
-     *
-     * @var string
-     */
-    protected $taxonomy = '';    
+    protected $taxonomies; 
 
     /**
      * Object constructor
@@ -71,9 +64,7 @@ class TaxonomyApiRepository implements Repository
      */
     public function findById($id)
     {
-        $response = $this->api->appData();
-
-        return ResponseSelector::select($response)->taxonomyTermById($taxonomy, $id);
+        return $this->taxonomies->get($id);
     }     
 
     /**
@@ -81,7 +72,7 @@ class TaxonomyApiRepository implements Repository
      */
     public function findByField(string $field, $value)
     {
-        return $this->api->get("/jobs?$field=$value&limit=1");
+        return $this->taxonomies->where($field, $value)->first();
     }        
 
     /**
@@ -89,7 +80,7 @@ class TaxonomyApiRepository implements Repository
      */
     public function where(string $field, $operator, $value = null): Repository
     {
-        $this->query[$field] = $value;
+        $this->taxonomies = $this->taxonomies->where($field, $value);
 
         return $this;
     }    
@@ -99,7 +90,7 @@ class TaxonomyApiRepository implements Repository
      */
     public function whereIn(string $field, array $values): Repository
     {
-        $this->query[$field] = $values;
+        $this->taxonomies = $this->taxonomies->whereIn($field, $values);
 
         return $this;        
     }    
@@ -109,9 +100,9 @@ class TaxonomyApiRepository implements Repository
      */
     public function orderBy(string $field, string $direction): Repository
     {
-        $this->query['orderBy'] = $field;
-
-        $this->query['order'] = $direction;
+        $this->taxonomies = strtolower($direction) === 'desc' ?
+            $this->taxonomies->sortByDesc($field) :
+            $this->taxonomies->sortBy($field);
 
         return $this;           
     }            
@@ -121,7 +112,7 @@ class TaxonomyApiRepository implements Repository
      */
     public function limit(int $limit): Repository
     {
-        $this->query['limit'] = $limit;
+        $this->taxonomies = $this->taxonomies->take($limit);
 
         return $this;             
     }    
@@ -131,7 +122,7 @@ class TaxonomyApiRepository implements Repository
      */
     public function find(): Traversable
     {
-        return $this->api->get('/search/jobs', $this->query);
+        return $this->taxonomies;
     }  
 
     /**
@@ -142,7 +133,7 @@ class TaxonomyApiRepository implements Repository
      */
     public function taxonomy(string $taxonomy): Repository
     {
-        $this->taxonomy = $taxonomy;
+        $this->taxonomies = $this->taxonomies->get($taxonomy);
 
         return $this;
     }      

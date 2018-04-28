@@ -3,7 +3,7 @@
 namespace EthicalJobs\Tests\SDK\Fixtures;
 
 use EthicalJobs;
-use Illuminate\Support\Collection;
+use EthicalJobs\SDK\Collection;
 
 class Taxonomies
 {
@@ -12,9 +12,9 @@ class Taxonomies
      *
      * @return  array
      */
-    public static function taxonomyQueryResponse(): Collection
+    public static function queryResponse(): Collection
     {
-        return new Collection(array_get(static::response(), 'data.taxonomies'));
+        return new Collection(static::response());
     }
 
     /**

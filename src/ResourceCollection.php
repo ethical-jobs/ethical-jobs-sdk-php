@@ -1,9 +1,9 @@
 <?php
 
-namespace EthicalJobs\SDK\Resources;
+namespace EthicalJobs\SDK;
 
-use Illuminate\Support\Facades\App;
-use EthicalJobs\SDK\ApiClient;
+use EthicalJobs\SDK\Repositories;
+use EthicalJobs\Foundation\Storage\Repository;
 
 /**
  * Api resource collection
@@ -31,18 +31,18 @@ class ResourceCollection extends \Illuminate\Support\Collection
     protected static function resources(): array
     {
         return [
-            JobsResource::getName()     => static::makeResource(JobsResource::class),
-            TaxonomyResource::getName() => static::makeResource(TaxonomyResource::class),
+            'jobs'          => Repositories\JobsApiRepository::class,
+            'taxonomies'    => Repositories\TaxonomyApiRepository::class,
         ];
     }
 
     /**
-     * Make a resource instance
+     * Make a resource repository instance
      *
-     * @param String $resouceClass
+     * @param string $resouceClass
      * @return EthicalJobs\SDK\ApiResource
      */
-    protected static function makeResource(string $resouceClass): ApiResource
+    public static function makeResourceRepository(string $resouceClass): Repository
     {
         $api = App::make(ApiClient::class);
 

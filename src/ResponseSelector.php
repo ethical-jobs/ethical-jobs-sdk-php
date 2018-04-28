@@ -5,7 +5,7 @@ namespace EthicalJobs\SDK;
 use Illuminate\Support\Collection;
 
 /**
- * Response selector
+ * Response selector - selects items from response collection
  *
  * @author Andrew McLagan <andrew@ethicaljobs.com.au>
  */
@@ -92,18 +92,6 @@ class ResponseSelector
 	{
 		return array_get($this->response, "data.entities.$entity.$id", []);
 	}	
-
-	/**
-	 * Returns taxonomy term by id from app-data response
-	 *
-	 * @param string $taxonomy
-	 * @param int $id
-	 * @return array
-	 */
-	public function taxonomyTermById(string $taxonomy, int $id): array
-	{
-		return array_get($this->response, "data.taxonomies.$taxonomy.$id", []);
-	}		
 
 	/**
 	 * Returns an entitites array
