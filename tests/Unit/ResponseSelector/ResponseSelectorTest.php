@@ -3,6 +3,7 @@
 namespace EthicalJobs\Tests\SDK;
 
 use EthicalJobs\SDK\ResponseSelector;
+use EthicalJobs\SDK\Collection;
 
 class ResponseSelectorTest extends TestCase
 {
@@ -12,9 +13,9 @@ class ResponseSelectorTest extends TestCase
      */
     public function it_can_set_and_get_ites_response()
     {
-        $responseOne = collect([ 'data' => [ 'foo' => 'bar'] ]);
+        $responseOne = new Collection([ 'data' => [ 'foo' => 'bar'] ]);
 
-        $responseTwo = collect([ 'datum' => [ 'foo' => 'bar-bar-bar'] ]);
+        $responseTwo = new Collection([ 'datum' => [ 'foo' => 'bar-bar-bar'] ]);
 
         $selector = ResponseSelector::select($responseOne);
 
@@ -37,6 +38,6 @@ class ResponseSelectorTest extends TestCase
 
         $this->assertTrue(is_iterable($selector->getResponse()));
 
-        $this->assertEquals($selector->getResponse(), collect($response));
+        $this->assertEquals($selector->getResponse(), new Collection($response));
     }        
 }

@@ -17,7 +17,8 @@
     ],
     "require": {
         "php": "^7.0",
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "~6.0",
+        "ethical-jobs/ethical-jobs-foundation": "~1.3"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.5",
@@ -41,6 +42,9 @@
     "prefer-stable": true,
     "extra": {
         "laravel": {
+            "dont-discover": [
+                "ethical-jobs/ethical-jobs-foundation"
+            ],          
             "providers": [
                 "EthicalJobs\\SDK\\Laravel\\ServiceProvider"
             ],

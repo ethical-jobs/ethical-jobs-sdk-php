@@ -2,7 +2,12 @@
 
 namespace EthicalJobs\Tests\SDK\Fixtures;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
+use EthicalJobs\SDK\ApiClient;
+use Illuminate\Support\Facades\App;
 
 class Responses
 {
@@ -11,7 +16,7 @@ class Responses
 	 *
 	 * @return String
 	 */
-	public static function token()
+	public static function token(): string
 	{
 		return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjZkMWY1NzhkNDFjZTg3ZTNmMDMzZDE1M2VmYmYzM2EzYmUzMjNjMzgyM2I2MmQ1YjVmOWFlOWU1ODk5YTA0NTZkZDUyMzI4ZGY5ZDg0NjU5In0';
 	}
@@ -76,6 +81,7 @@ class Responses
 	/**
 	 * Jobs resource response
 	 *
+	 * @param int $status
 	 * @return GuzzleHttp\Psr7\Response
 	 */
 	public static function jobs($status = 200)
@@ -328,5 +334,22 @@ class Responses
 		';
 
 		return new Response($status, [], $body);
-	}	
+	}
+
+	/**
+	 * Mocks a Guzzle response stack
+	 * 
+	 * @param  array  $responses
+	 * @return \EthicalJobs\SDK\ApiClient
+	 */
+	public static function mock(array $responses): ApiClient
+	{
+        $responseStack = new MockHandler($responses);
+
+        $guzzle = new Client(['handler' => HandlerStack::create($responseStack)]);            
+
+        App::instance(Client::class, $guzzle);
+
+        return App::make(ApiClient::class);
+	}
 }

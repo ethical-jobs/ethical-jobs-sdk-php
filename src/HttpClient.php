@@ -5,7 +5,6 @@ namespace EthicalJobs\SDK;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Support\Collection;
 use GuzzleHttp\Exception\ClientException;
 use EthicalJobs\SDK\Authentication\Authenticator;
 use EthicalJobs\SDK\Router;
@@ -67,7 +66,7 @@ class HttpClient
 	 * @param  string $route   
 	 * @param  array  $body    
 	 * @param  array  $headers 
-	 * @return Illuminate\Support\Collection     
+	 * @return EthicalJobs\SDK\Collection     
 	 */
 	public function get(string $route, $body = [], $headers = [])
 	{
@@ -80,7 +79,7 @@ class HttpClient
 	 * @param  string $route   
 	 * @param  array  $body    
 	 * @param  array  $headers 
-	 * @return Illuminate\Support\Collection      
+	 * @return EthicalJobs\SDK\Collection      
 	 */
 	public function post(string $route, $body = [], $headers = [])
 	{
@@ -93,7 +92,7 @@ class HttpClient
 	 * @param  string $route   
 	 * @param  array  $body    
 	 * @param  array  $headers 
-	 * @return Illuminate\Support\Collection     
+	 * @return EthicalJobs\SDK\Collection     
 	 */
 	public function put(string $route, $body = [], $headers = [])
 	{
@@ -106,7 +105,7 @@ class HttpClient
 	 * @param  string $route   
 	 * @param  array  $body    
 	 * @param  array  $headers 
-	 * @return Illuminate\Support\Collection            
+	 * @return EthicalJobs\SDK\Collection            
 	 */
 	public function patch(string $route, $body = [], $headers = [])
 	{
@@ -119,7 +118,7 @@ class HttpClient
 	 * @param  string $route   
 	 * @param  array  $body    
 	 * @param  array  $headers 
-	 * @return Illuminate\Support\Collection  
+	 * @return EthicalJobs\SDK\Collection  
 	 */
 	public function delete(string $route, $body = [], $headers = [])
 	{
@@ -133,7 +132,7 @@ class HttpClient
 	 * @param  string $route   
 	 * @param  array  $body    
 	 * @param  array  $headers 
-	 * @return Illuminate\Support\Collection         
+	 * @return EthicalJobs\SDK\Collection         
 	 */
 	public function request(string $verb, string $route, $body = [], $headers = []): Collection
 	{
@@ -221,7 +220,7 @@ class HttpClient
 	 * Dispatches a request and returns a response instance
 	 *
 	 * @param GuzzleHttp\Psr7\Request $request
-	 * @return Illuminate\Support\Collection
+	 * @return EthicalJobs\SDK\Collection
 	 */
 	protected function dispatchRequest(Request $request): Collection
 	{
@@ -247,7 +246,7 @@ class HttpClient
 	 * Prases a response and returns a collection or item
 	 *
 	 * @param GuzzleHttp\Psr7\Response $response
-	 * @return Illuminate\Support\Collection
+	 * @return EthicalJobs\SDK\Collection
 	 */
 	protected function parseResponse(Response $response)
 	{

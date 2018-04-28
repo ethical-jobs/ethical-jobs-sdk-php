@@ -2,20 +2,20 @@
 
 namespace EthicalJobs\SDK;
 
-use EthicalJobs\SDK\Collection;
+use EthicalJobs\Foundation\Http\ParameterQuery
 
 /**
- * Response selector - selects items from response collection
+ * Job parameter query
  *
  * @author Andrew McLagan <andrew@ethicaljobs.com.au>
  */
 
-class ResponseSelector 
+class JobParameterQuery implements ParameterQuery
 {
 	/**
 	 * Response array
 	 *
-	 * @var EthicalJobs\SDK\Collection
+	 * @var Illuminate\Support\Collection
 	 */
 	protected $response = [];
 
@@ -25,20 +25,9 @@ class ResponseSelector
 	 * @param iterable $response
 	 * @return void
 	 */
-	public function __construct(iterable $response)
+	private function __construct(iterable $response)
 	{
 		$this->setResponse($response);
-	}	
-
-	/**
-	 * Static class instantiation
-	 *
-	 * @param iterable $response
-	 * @return $this
-	 */
-	public static function select(iterable $response): ResponseSelector
-	{
-		return new static($response);
 	}	
 
 	/**
@@ -50,7 +39,7 @@ class ResponseSelector
 	public function setResponse(iterable $response): ResponseSelector
 	{
 		if (! $response instanceof Collection) {
-			$response = new Collection($response);
+			$response = collect($response);
 		}
 
 		$this->response = $response;
@@ -61,12 +50,23 @@ class ResponseSelector
 	/**
 	 * Gets the current response
 	 *
-	 * @return EthicalJobs\SDK\Collection
+	 * @return Illuminate\Support\Collection
 	 */
 	public function getResponse(): Collection
 	{
 		return $this->response;
-	}	
+	}		
+
+	/**
+	 * Static class instantiation
+	 *
+	 * @param iterable $response
+	 * @return $this
+	 */
+	public static function select(iterable $response): ResponseSelector
+	{
+		return new static($response);
+	}		
 
 	/**
 	 * Returns an entity by current response result
@@ -94,6 +94,18 @@ class ResponseSelector
 	}	
 
 	/**
+	 * Returns taxonomy term by id from app-data response
+	 *
+	 * @param string $taxonomy
+	 * @param int $id
+	 * @return array
+	 */
+	public function taxonomyTermById(string $taxonomy, int $id): array
+	{
+		return array_get($this->response, "data.taxonomies.$taxonomy.$id", []);
+	}		
+
+	/**
 	 * Returns an entitites array
 	 *
 	 * @param string $entities
@@ -103,4 +115,11 @@ class ResponseSelector
 	{
 		return array_get($this->response, "data.entities.$entities", []);
 	}		
+
+	/**
+	 * 
+	 */
+	public function entitiesByDateFrom	
+
+	public function entitiesByDateFrom
 }

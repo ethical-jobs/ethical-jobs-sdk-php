@@ -4,11 +4,11 @@ namespace EthicalJobs\Tests\SDK;
 
 use Mockery;
 use GuzzleHttp\Psr7\Response;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
+use EthicalJobs\SDK\Collection;
 use EthicalJobs\SDK\HttpClient;
-use EthicalJobs\SDK\Resources;
+use EthicalJobs\SDK\Repositories;
 use EthicalJobs\SDK\ApiClient;
 
 class ApiClientTest extends TestCase
@@ -17,17 +17,14 @@ class ApiClientTest extends TestCase
      * @test
      * @group Unit
      */
-    public function it_can_has_correct_resource_properties()
+    public function it_has_correct_resource_properties()
     {
-        $client = App::make(ApiClient::class);
+        $api = App::make(ApiClient::class);
 
-        $this->assertInstanceOf(Resources\JobsResource::class, $client->jobs);
-        $this->assertInstanceOf(Resources\InvoicesResource::class, $client->invoices);
-        $this->assertInstanceOf(Resources\MediaResource::class, $client->media);
-        $this->assertInstanceOf(Resources\OrganisationsResource::class, $client->organisations);
-        $this->assertInstanceOf(Resources\SearchResource::class, $client->search);
-        $this->assertInstanceOf(Resources\UsersResource::class, $client->users);
-        $this->assertInstanceOf(Resources\TaxonomyResource::class, $client->taxonomies);
+        $this->assertInstanceOf(Repositories\JobApiRepository::class, $api->jobs);
+        // Taxonomy repository has a HTTP call in its constructor.
+        Cache::shouldReceive('remember')->once()->andReturn([]);
+        $this->assertInstanceOf(Repositories\TaxonomyApiRepository::class, $api->taxonomies);
     }
 
     /**

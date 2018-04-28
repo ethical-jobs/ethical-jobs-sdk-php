@@ -1,18 +1,14 @@
 <?php
 
-namespace EthicalJobs\Tests\SDK\Resources\Jobs;
+namespace EthicalJobs\Tests\SDK\Repositories\JobApiRepository;
 
 use Mockery;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Collection;
-use EthicalJobs\Tests\SDK\Fixtures;
-use EthicalJobs\SDK\Resources\JobsResource;
-use EthicalJobs\Tests\SDK\TestCase;
-use EthicalJobs\SDK\HttpClient;
+use EthicalJobs\SDK\Collection;
+use EthicalJobs\SDK\Repositories\JobApiRepository;
 use EthicalJobs\SDK\ApiClient;
+use EthicalJobs\Tests\SDK\Fixtures;
 
-
-class JobsCollectionsTest extends TestCase
+class CollectionsTest extends \EthicalJobs\Tests\SDK\TestCase
 {
     /**
      * @test
@@ -20,16 +16,16 @@ class JobsCollectionsTest extends TestCase
      */
     public function it_can_patch_a_collection_of_jobs()
     {
-        $jobs = Fixtures\Requests::jobsCollection(200);
-
         $responses = [
-            collect(['data' => ['entities' => ['jobs' => ['1111','1111']]]]),
-            collect(['data' => ['entities' => ['jobs' => ['2222','2222']]]]),
-            collect(['data' => ['entities' => ['jobs' => ['1111','1111']]]]),
-            collect(['data' => ['entities' => ['jobs' => ['4444','4444']]]]),                                   
+            new Collection(['data' => ['entities' => ['jobs' => ['1111','1111']]]]),
+            new Collection(['data' => ['entities' => ['jobs' => ['2222','2222']]]]),
+            new Collection(['data' => ['entities' => ['jobs' => ['1111','1111']]]]),
+            new Collection(['data' => ['entities' => ['jobs' => ['4444','4444']]]]),                                   
         ];
 
-        $http = Mockery::mock(HttpClient::class)
+        $jobs = Fixtures\Requests::jobsCollection(200);
+
+        $api = Mockery::mock(ApiClient::class)
             ->shouldReceive('patch')
             ->times(4)
             ->withArgs([
@@ -41,14 +37,12 @@ class JobsCollectionsTest extends TestCase
             ->andReturn($responses[0],$responses[1],$responses[2],$responses[3])
             ->getMock();
 
-        App::instance(HttpClient::class, $http);
+        $repository = new JobApiRepository($api);
 
-        $api = App::make(ApiClient::class);
-
-        $results = (new JobsResource($api))
-            ->patchCollection($jobs);
+        $results = $repository->patchCollection($jobs);
 
         $this->assertInstanceOf(Collection::class, $results);
+        
         $this->assertEquals($results->toArray(), [
             'data' => [
                 'entities' => [
@@ -64,16 +58,16 @@ class JobsCollectionsTest extends TestCase
      */
     public function it_can_put_a_collection_of_jobs()
     {
-        $jobs = Fixtures\Requests::jobsCollection(200);
-
         $responses = [
-            collect(['data' => ['entities' => ['jobs' => ['1111','1111']]]]),
-            collect(['data' => ['entities' => ['jobs' => ['2222','2222']]]]),
-            collect(['data' => ['entities' => ['jobs' => ['1111','1111']]]]),
-            collect(['data' => ['entities' => ['jobs' => ['4444','4444']]]]),                                   
+            new Collection(['data' => ['entities' => ['jobs' => ['1111','1111']]]]),
+            new Collection(['data' => ['entities' => ['jobs' => ['2222','2222']]]]),
+            new Collection(['data' => ['entities' => ['jobs' => ['1111','1111']]]]),
+            new Collection(['data' => ['entities' => ['jobs' => ['4444','4444']]]]),                                   
         ];
 
-        $http = Mockery::mock(HttpClient::class)
+        $jobs = Fixtures\Requests::jobsCollection(200);
+
+        $api = Mockery::mock(ApiClient::class)
             ->shouldReceive('put')
             ->times(4)
             ->withArgs([
@@ -85,14 +79,12 @@ class JobsCollectionsTest extends TestCase
             ->andReturn($responses[0],$responses[1],$responses[2],$responses[3])
             ->getMock();
 
-        App::instance(HttpClient::class, $http);
+        $repository = new JobApiRepository($api);
 
-        $api = App::make(ApiClient::class);
-
-        $results = (new JobsResource($api))
-            ->putCollection($jobs);
+        $results = $repository->putCollection($jobs);
 
         $this->assertInstanceOf(Collection::class, $results);
+
         $this->assertEquals($results->toArray(), [
             'data' => [
                 'entities' => [
