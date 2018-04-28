@@ -2,6 +2,8 @@
 
 namespace EthicalJobs\SDK;
 
+use Illuminate\Support\Collection;
+
 /**
  * Response selector
  *
@@ -13,9 +15,9 @@ class ResponseSelector
 	/**
 	 * Response array
 	 *
-	 * @var EthicalJobs\SDK\Collection
+	 * @var Illuminate\Support\Collection
 	 */
-	protected $response;
+	protected $response = [];
 
 	/**
 	 * Object constructor
@@ -23,7 +25,7 @@ class ResponseSelector
 	 * @param iterable $response
 	 * @return void
 	 */
-	public function __construct(iterable $response)
+	private function __construct(iterable $response)
 	{
 		$this->setResponse($response);
 	}	
@@ -48,7 +50,7 @@ class ResponseSelector
 	public function setResponse(iterable $response): ResponseSelector
 	{
 		if (! $response instanceof Collection) {
-			$response = new Collection($response);
+			$response = collect($response);
 		}
 
 		$this->response = $response;
@@ -59,11 +61,11 @@ class ResponseSelector
 	/**
 	 * Gets the current response
 	 *
-	 * @return EthicalJobs\SDK\Collection
+	 * @return Illuminate\Support\Collection
 	 */
 	public function getResponse(): Collection
 	{
-		return $this->response ?? new Collection;
+		return $this->response;
 	}	
 
 	/**
@@ -72,7 +74,7 @@ class ResponseSelector
 	 * @param string $entity
 	 * @return array
 	 */
-	public function byResult(string $entity): array
+	public function entityByResult(string $entity): array
 	{
 		$result = array_get($this->response, "data.result", '');
 
@@ -86,10 +88,22 @@ class ResponseSelector
 	 * @param int $id
 	 * @return array
 	 */
-	public function byId(string $entity, int $id): array
+	public function entityById(string $entity, int $id): array
 	{
 		return array_get($this->response, "data.entities.$entity.$id", []);
 	}	
+
+	/**
+	 * Returns taxonomy term by id from app-data response
+	 *
+	 * @param string $taxonomy
+	 * @param int $id
+	 * @return array
+	 */
+	public function taxonomyTermById(string $taxonomy, int $id): array
+	{
+		return array_get($this->response, "data.taxonomies.$taxonomy.$id", []);
+	}		
 
 	/**
 	 * Returns an entitites array
