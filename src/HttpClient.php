@@ -68,10 +68,26 @@ class HttpClient
 	 * @param  array  $headers 
 	 * @return EthicalJobs\SDK\Collection     
 	 */
-	public function get(string $route, $body = [], $headers = [])
+	public function get(string $route, array $body = [], array $headers = [])
 	{
 		return $this->request('GET', $route, $body, $headers);
 	}	
+
+	/**
+	 * Call GET and cache the response
+	 * 
+	 * @param  string $route   
+	 * @param  array  $body    
+	 * @param  array  $headers 
+	 * @param  int  $ttl 
+	 * @return EthicalJobs\SDK\Collection 
+	 */
+   	public function getAndRemember(string $route, array $body = [], array $headers = [], int $ttl = 5)
+   	{
+		return QueryCache::remember($route, $body, function() use ($route, $body, $headers) {
+			return $this->get($route, $body, $headers);
+		});
+   	}   	
 
 	/**
 	 * Http post request

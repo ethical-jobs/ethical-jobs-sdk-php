@@ -67,7 +67,7 @@ class ApiClient
         return Cache::remember('ej:sdk:app-data', 120, function(){
             return $this->http->get('/');
         });		
-   	}	   	
+   	}	   		
 
 	/**
 	 * Dynamic api resource properties

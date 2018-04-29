@@ -1,3 +1,8 @@
+# v1.1.0
+
+- Added Query caching abilities
+- Integrated Query caching into get requests with EthicalJobs::getAndRemember() function
+
 # v1.0.0
 
 - Adding changelog
