@@ -17,7 +17,7 @@ class QueryCache
 	 *
 	 * @var string
 	 */
-	protected static $cacheKey = 'ej:api:cache:';
+	protected static $cacheKey = 'ej:sdk:';
 
 	/**
 	 * Remeber cachable

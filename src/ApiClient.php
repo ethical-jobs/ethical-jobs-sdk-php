@@ -64,7 +64,7 @@ class ApiClient
 	 */
    	public function appData()
    	{
-        return Cache::remember('ej:sdk:app-data', 120, function(){
+        return Cache::remember('ej:sdk:app-data', 240, function(){
             return $this->http->get('/');
         });		
    	}	   		
