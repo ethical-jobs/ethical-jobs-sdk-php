@@ -108,7 +108,7 @@ class ApiClientTest extends TestCase
 
         Cache::shouldReceive('remember')
             ->once()
-            ->with('ej:sdk:app-data', 120, $valudateCacheClosure)
+            ->with('ej:sdk:app-data', 240, $valudateCacheClosure)
             ->andReturn($returnValue);
 
         $http = Mockery::mock(HttpClient::class)
