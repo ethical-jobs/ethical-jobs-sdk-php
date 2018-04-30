@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c8f5f50e7d56f69c4dd751ad4de2b8a8",
+    "content-hash": "c41b798e57290aa94c536a1fa15f59e7",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -232,16 +232,16 @@
         },
         {
             "name": "ethical-jobs/ethical-jobs-foundation",
-            "version": "v1.3.1",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ethical-jobs/ethical-jobs-foundation-php.git",
-                "reference": "059aeefe37c40fba973c129d62d7a630cfaaf421"
+                "reference": "8fb46ac1c806c71596b557a75eb3cc47ab53cc74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ethical-jobs/ethical-jobs-foundation-php/zipball/059aeefe37c40fba973c129d62d7a630cfaaf421",
-                "reference": "059aeefe37c40fba973c129d62d7a630cfaaf421",
+                "url": "https://api.github.com/repos/ethical-jobs/ethical-jobs-foundation-php/zipball/8fb46ac1c806c71596b557a75eb3cc47ab53cc74",
+                "reference": "8fb46ac1c806c71596b557a75eb3cc47ab53cc74",
                 "shasum": ""
             },
             "require": {
@@ -300,7 +300,7 @@
                 "foundation",
                 "laravel"
             ],
-            "time": "2018-04-28T04:54:44+00:00"
+            "time": "2018-04-30T08:12:11+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

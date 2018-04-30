@@ -6,6 +6,9 @@ use Traversable;
 use EthicalJobs\SDK\ApiClient;
 use EthicalJobs\SDK\Collection;
 use EthicalJobs\Foundation\Storage\Repository;
+use EthicalJobs\Foundation\Storage\RepositoryCriteria;
+use EthicalJobs\Foundation\Storage\CriteriaCollection;
+use EthicalJobs\Foundation\Storage\HasCriteria;
 
 /**
  * Api resource repository
@@ -13,8 +16,10 @@ use EthicalJobs\Foundation\Storage\Repository;
  * @author Andrew McLagan <andrew@ethicaljobs.com.au>
  */
 
-class JobApiRepository implements Repository
+class JobApiRepository implements Repository, RepositoryCriteria
 {
+    use HasCriteria;
+
     /**
      * Api client instance
      *
@@ -37,6 +42,8 @@ class JobApiRepository implements Repository
     public function __construct(ApiClient $api)
     {
         $this->setStorageEngine($api); 
+
+        $this->criteria = new CriteriaCollection;
     }
 
     /**
@@ -120,6 +127,8 @@ class JobApiRepository implements Repository
      */
     public function find(): Traversable
     {
+        $this->applyCriteria();
+        
         return $this->api->get('/search/jobs', $this->query);
     }  
 
@@ -165,20 +174,5 @@ class JobApiRepository implements Repository
         }
 
         return new Collection($responses);
-    }       
-
-    /**
-     * {@inheritdoc}
-     */
-    public function asModels(): Repository { }    
-
-    /**
-     * {@inheritdoc}
-     */
-    public function asObjects(): Repository { }    
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function asArrays(): Repository { }            
+    }                
 }
