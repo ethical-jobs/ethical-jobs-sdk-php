@@ -4,7 +4,7 @@ namespace EthicalJobs\SDK;
 
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Cache;
-use EthicalJobs\Foundation\Storage\Repository;
+use EthicalJobs\Storage\Contracts\Repository;
 use EthicalJobs\SDK\Router;
 
 /**
@@ -46,7 +46,7 @@ class ApiClient
 	 * Resource repository accessor
 	 * 
 	 * @param string $resourceName
-	 * @return EthicalJobs\Foundation\Storage\Repository
+	 * @return EthicalJobs\Storage\Contracts\Repository
 	 */
    	public function resource(string $resourceName): Repository
    	{	

@@ -4,7 +4,7 @@ namespace EthicalJobs\SDK;
 
 use Illuminate\Support\Facades\App;
 use EthicalJobs\SDK\Repositories;
-use EthicalJobs\Foundation\Storage\Repository;
+use EthicalJobs\Storage\Storage\Repository;
 
 /**
  * Api resource collection

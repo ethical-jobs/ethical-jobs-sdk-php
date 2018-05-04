@@ -2,10 +2,9 @@
 
 namespace EthicalJobs\SDK\Repositories;
 
-use Traversable;
 use EthicalJobs\SDK\ApiClient;
 use EthicalJobs\SDK\Collection;
-use EthicalJobs\Foundation\Storage\Repository;
+use EthicalJobs\Storage\Contracts\Repository;
 
 /**
  * Api resource repository
@@ -13,15 +12,8 @@ use EthicalJobs\Foundation\Storage\Repository;
  * @author Andrew McLagan <andrew@ethicaljobs.com.au>
  */
 
-class TaxonomyApiRepository implements Repository
+class TaxonomyApiRepository extends ApiRepository
 {
-    /**
-     * Api client
-     *
-     * @var EthicalJobs\SDK\ApiClient
-     */
-    protected $api;   
-
     /**
      * Taxonomies collection
      *
@@ -33,31 +25,15 @@ class TaxonomyApiRepository implements Repository
      * Object constructor
      *
      * @param EthicalJobs\SDK\ApiClient $api
+     * @param string $resource
+     * @return void
      */
     public function __construct(ApiClient $api)
     {
-        $this->setStorageEngine($api); 
+        parent::__construct($api, '/');
 
         $this->fetchTaxonomies();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStorageEngine()
-    {
-        return $this->api;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStorageEngine($storage)
-    {
-        $this->api = $storage;
-
-        return $this;
-    }    
+    }        
 
     /**
      * {@inheritdoc}
@@ -130,7 +106,7 @@ class TaxonomyApiRepository implements Repository
     /**
      * {@inheritdoc}
      */
-    public function find(): Traversable
+    public function find(): iterable
     {
         return $this->taxonomies;
     }  
@@ -163,20 +139,5 @@ class TaxonomyApiRepository implements Repository
         $taxonomies = array_get($response, 'data.taxonomies', []);
 
         $this->taxonomies = new Collection($taxonomies);
-    }       
-
-    /**
-     * {@inheritdoc}
-     */
-    public function asModels(): Repository { }    
-
-    /**
-     * {@inheritdoc}
-     */
-    public function asObjects(): Repository { }    
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function asArrays(): Repository { }            
+    }                
 }
