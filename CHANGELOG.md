@@ -1,3 +1,8 @@
+# v1.1.1
+
+- Removed redundant publish step in drone config.
+- Changed to using latest APHEX docker image.
+
 # v1.1.0
 
 - Added Query caching abilities

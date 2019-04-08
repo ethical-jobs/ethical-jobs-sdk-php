@@ -1,16 +1,9 @@
 pipeline:
 
   test:
-    image: ethicaljobs/aphex:7.2.x
+    image: ethicaljobs/aphex
     pull: true
     commands: [ 'composer install --prefer-dist', './vendor/bin/phpunit' ]
-
-  publish:
-    image: byrnedo/alpine-curl
-    commands: [ 'curl -XPOST -H"content-type:application/json" "https://packagist.org/api/update-package?username=andrewmclagan&apiToken=2cmy6xog4hs0kogk4ccg" -d''{"repository":{"url":"https://github.com/ethical-jobs/ethical-jobs-sdk-php"}}''' ]
-    when:
-      status: success
-      event: tag
 
   notify-slack:
     image: plugins/slack
